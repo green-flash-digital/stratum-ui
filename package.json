@@ -1,61 +1,39 @@
 {
-  "name": "@gfdigital/template-ts-monorepo",
+  "name": "@stratum-ui/root",
   "private": true,
   "version": "0.0.1",
-  "description": "An opinionated monorepo template that includes boilerplate examples for TS & Vite library packages",
+  "description": "A framework-agnostic collection of headless UI primitives for layered interfaces — dialogs, drawers, tooltips, and more — built on native browser standards and fully accessible by design",
+  "author": "Drew DeCarme (drew@greenflash.digital)",
+  "license": "Apache-2.0",
+  "packageManager": "yarn@4.9.1",
   "type": "module",
   "workspaces": {
     "packages": [
       "packages/*"
     ]
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/green-flash-digital/stratum-ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/green-flash-digital/stratum-ui/issues"
+  },
+  "homepage": "https://github.com/green-flash-digital/stratum-ui#readme",
   "scripts": {
     "build": "yarn turbo build",
     "release": "npx changeset publish",
     "test": "yarn vitest --run",
     "lint": "eslint src --fix"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/green-flash-digital/template-ts-monorepo.git"
-  },
-  "keywords": [
-    "typescript",
-    "monorepo",
-    "template",
-    "green-flash-digital",
-    "opinionated",
-    "boilerplate",
-    "starter",
-    "yarn",
-    "workspaces",
-    "turborepo",
-    "turbo",
-    "vite",
-    "vite-library",
-    "eslint",
-    "vitest",
-    "tsconfig",
-    "changesets",
-    "multi-package",
-    "repo-template",
-    "build-tooling"
-  ],
-  "author": "Drew DeCarme (drew@greenflash.digital)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/green-flash-digital/template-ts-monorepo/issues"
-  },
-  "homepage": "https://github.com/green-flash-digital/template-ts-monorepo#readme",
-  "packageManager": "yarn@4.7.0",
   "devDependencies": {
-    "@changesets/cli": "^2.28.1",
-    "@gfdigital/eslint-config": "0.4.0",
+    "@changesets/cli": "^2.29.3",
+    "@gfdigital/eslint-config": "0.4.3",
     "@gfdigital/tsconfig": "^0.3.1",
-    "@types/node": "^22.13.10",
-    "eslint": "^9.22.0",
-    "turbo": "^2.4.4",
-    "typescript": "^5.8.2",
-    "vitest": "^3.0.9"
+    "@types/node": "^22.15.12",
+    "eslint": "^9.26.0",
+    "turbo": "^2.5.2",
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.3"
   }
 }

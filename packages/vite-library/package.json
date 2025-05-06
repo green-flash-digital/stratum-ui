@@ -1,18 +1,8 @@
 {
-  "name": "@gfdigital/template-monorepo-package-vite",
+  "name": "@stratum-ui/vite-lib-template",
   "version": "0.0.1",
-  "description": "A monorepo library that is built with vite & ts",
+  "private": true,
   "author": "Drew DeCarme (drew@greenflash.digital)",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/green-flash-digital/template-ts-monorepo.git",
-    "directory": "packages/vite-library"
-  },
-  "bugs": {
-    "url": "https://github.com/green-flash-digital/template-ts-monorepo/issues"
-  },
-  "homepage": "https://github.com/green-flash-digital/template-ts-monorepo#readme",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -28,9 +18,11 @@
   },
   "devDependencies": {
     "@gfdigital/tsconfig": "^0.3.1",
-    "@types/node": "^22.13.10",
-    "typescript": "^5.8.2",
-    "vite": "^6.2.2"
+    "@types/node": "^22.15.12",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5"
   },
-  "dependencies": {}
+  "dependencies": {
+    "clsx": "^2.1.1"
+  }
 }
