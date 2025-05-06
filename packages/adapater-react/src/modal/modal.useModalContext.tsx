@@ -1,4 +1,4 @@
-import type { DialogState } from "@stratum-ui/core";
+import type { DialogState } from "@stratum-ui/core/dialog";
 import { useContext } from "react";
 
 import type { ModalContextType } from "./modal.utils.js";

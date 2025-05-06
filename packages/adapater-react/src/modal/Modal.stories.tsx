@@ -1,5 +1,5 @@
 import type { Meta } from "@storybook/react";
-import { ModalEngine } from "@stratum-ui/core";
+import { ModalEngine } from "@stratum-ui/core/modal";
 
 import { useModal } from "./modal.useModal.js";
 

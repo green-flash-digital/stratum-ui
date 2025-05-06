@@ -1,5 +1,5 @@
-import type { ModalOptions } from "@stratum-ui/core";
-import { ModalEngine } from "@stratum-ui/core";
+import type { ModalOptions } from "@stratum-ui/core/modal";
+import { ModalEngine } from "@stratum-ui/core/modal";
 import { useRef } from "react";
 
 export function useModal(options?: Partial<ModalOptions>) {

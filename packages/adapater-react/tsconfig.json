@@ -1,4 +1,3 @@
 {
-  "extends": "@gfdigital/tsconfig/library",
-  "include": ["src"]
+  "extends": "@gfdigital/tsconfig/library"
 }

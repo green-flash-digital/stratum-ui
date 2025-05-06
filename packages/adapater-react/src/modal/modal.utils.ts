@@ -1,4 +1,4 @@
-import type { ModalState, ModalEngine } from "@stratum-ui/core";
+import type { ModalState, ModalEngine } from "@stratum-ui/core/modal";
 import React from "react";
 
 export type ModalContextType<S extends ModalState> = Pick<

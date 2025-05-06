@@ -1,8 +1,8 @@
 import type { MouseEvent } from "react";
 import { Isoscribe } from "isoscribe";
 
-import type { SetAsyncStateQueueState } from "./AsyncStateQueue.js";
-import { AsyncStateQueue } from "./AsyncStateQueue.js";
+import type { SetAsyncStateQueueState } from "../async-queue/AsyncStateQueue.js";
+import { AsyncStateQueue } from "../async-queue/AsyncStateQueue.js";
 
 export type DialogState = Record<string, unknown>;
 

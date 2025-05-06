@@ -1,12 +1,15 @@
 import type { Meta } from "@storybook/react";
 import { css } from "@linaria/core";
-import type { PopoverPosition } from "@stratum-ui/core";
-import { classes, PopoverEngine, popoverPosition } from "@stratum-ui/core";
+import type { PopoverPosition } from "@stratum-ui/core/popover";
+import { PopoverEngine, popoverPosition } from "@stratum-ui/core/popover";
+import "@stratum-ui/core/popover/css";
+import { styles } from "@stratum-ui/core/popover/styles";
+import { classes } from "@stratum-ui/core/utils";
 
 import { usePopover } from "./popover.usePopover.js";
 
 const meta: Meta = {
-  title: "Popover / Engine",
+  title: "Popover",
   parameters: {
     layout: "centered",
   },
@@ -24,7 +27,7 @@ export const WithInstance = () => {
       >
         Open Popover
       </button>
-      <div ref={PopoverInstance.setPopover} className={styles}>
+      <div ref={PopoverInstance.setPopover}>
         <h3>I'm a popover</h3>
         <button onClick={PopoverInstance.hide}>Close me</button>
       </div>
@@ -39,7 +42,22 @@ export const WithHook = () => {
       <button onClick={popover.show} ref={popover.setPopoverTarget}>
         Open Popover
       </button>
-      <div ref={popover.setPopover} className={styles}>
+      <div ref={popover.setPopover}>
+        <h3>I'm a popover</h3>
+        <button onClick={popover.hide}>Close me</button>
+      </div>
+    </>
+  );
+};
+
+export const WithDefaultStyles = () => {
+  const popover = usePopover();
+  return (
+    <>
+      <button onClick={popover.show} ref={popover.setPopoverTarget}>
+        Open Popover
+      </button>
+      <div ref={popover.setPopover} className={styles.base}>
         <h3>I'm a popover</h3>
         <button onClick={popover.hide}>Close me</button>
       </div>
@@ -76,26 +94,6 @@ const posStyles = css`
   }
 `;
 
-const styles = css`
-  // When the popover is opened
-  &:popover-open {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  // Closed styles
-  opacity: 0;
-  transform: scale(0.9);
-  transition: all 0.15s allow-discrete;
-
-  @starting-style {
-    &:popover-open {
-      opacity: 0;
-      transform: scale(0.9);
-    }
-  }
-`;
-
 export const Positioning = () => {
   const popover = usePopover({ popoverOffset: 10 });
 
@@ -114,7 +112,7 @@ export const Positioning = () => {
         >
           Open Popover
         </button>
-        <div ref={popover.setPopover} className={classes(styles)}>
+        <div ref={popover.setPopover} className={classes(styles.base)}>
           <h3>I'm a popover</h3>
           <button onClick={popover.hide}>Close me</button>
         </div>

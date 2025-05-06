@@ -4,8 +4,8 @@ import type {
   DialogOptions,
   DialogProperties,
   DialogState,
-} from "./DialogEngine.js";
-import { DialogEngine } from "./DialogEngine.js";
+} from "../dialog/DialogEngine.js";
+import { DialogEngine } from "../dialog/DialogEngine.js";
 
 export type ModalState = DialogState;
 export type ModalOptions = DialogOptions & {
