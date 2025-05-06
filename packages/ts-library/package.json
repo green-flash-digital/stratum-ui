@@ -1,0 +1,31 @@
+{
+  "name": "@gfdigital/template-monorepo-package-ts",
+  "version": "0.0.1",
+  "description": "A monorepo library that is built only with TS",
+  "author": "Drew DeCarme (drew@greenflash.digital)",
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/green-flash-digital/template-ts-monorepo.git",
+    "directory": "packages/ts-library"
+  },
+  "bugs": {
+    "url": "https://github.com/green-flash-digital/template-ts-monorepo/issues"
+  },
+  "homepage": "https://github.com/green-flash-digital/template-ts-monorepo#readme",
+  "scripts": {
+    "build": "yarn tsc --project ./tsconfig.build.json",
+    "dev": "yarn build --watch"
+  },
+  "devDependencies": {
+    "@gfdigital/tsconfig": "^0.3.1",
+    "typescript": "^5.8.2"
+  }
+}
