@@ -24,9 +24,8 @@
     "./*/styles": "./dist/*/styles.js"
   },
   "scripts": {
-    "build": "yarn build:modules && yarn build:types",
-    "build:modules": "yarn tsx ./scripts/build.ts",
-    "build:types": "yarn tsc --project tsconfig.build.json",
+    "build": "yarn tsx ./scripts/build.ts",
+    "dev": "yarn tsx ./scripts/dev.ts",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -39,6 +38,7 @@
     "@linaria/core": "6.3.0",
     "@types/babel__core": "^7",
     "@wyw-in-js/vite": "0.6.0",
+    "chokidar": "^4.0.3",
     "postcss": "8.5.3",
     "postcss-load-config": "6.0.1",
     "postcss-modules": "6.0.1",
