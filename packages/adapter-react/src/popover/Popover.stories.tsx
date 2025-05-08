@@ -1,7 +1,7 @@
 import type { Meta } from "@storybook/react";
 import { css } from "@linaria/core";
 import type { PopoverPosition } from "@stratum-ui/core/popover";
-import { PopoverEngine, popoverPosition } from "@stratum-ui/core/popover";
+import { PopoverEngine, popoverPositions } from "@stratum-ui/core/popover";
 import "@stratum-ui/core/popover/css";
 import { styles } from "@stratum-ui/core/popover/styles";
 import { classes } from "@stratum-ui/core/utils";
@@ -95,7 +95,7 @@ const posStyles = css`
 `;
 
 export const Positioning = () => {
-  const popover = usePopover({ popoverOffset: 10 });
+  const popover = usePopover({ offset: 10 });
 
   return (
     <div className={posStyles}>
@@ -129,7 +129,7 @@ export const Positioning = () => {
         />
         <h2>Positioning</h2>
         <p>The position that the popover will render relative to the target</p>
-        {popoverPosition.map((position) => (
+        {popoverPositions.map((position) => (
           <div key={position}>
             <label>
               <input

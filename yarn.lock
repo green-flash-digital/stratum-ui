@@ -2909,9 +2909,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@stratum-ui/react@workspace:packages/react":
+"@stratum-ui/react@workspace:packages/adapter-react":
   version: 0.0.0-use.local
-  resolution: "@stratum-ui/react@workspace:packages/react"
+  resolution: "@stratum-ui/react@workspace:packages/adapter-react"
   dependencies:
     "@chromatic-com/storybook": "npm:^3.2.6"
     "@gfdigital/tsconfig": "npm:^0.3.1"

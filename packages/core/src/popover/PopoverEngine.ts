@@ -29,7 +29,7 @@ export type PopoverOptions = {
   popoverTargetAction: PopoverTargetAction;
   /**
    * ### `auto`
-   * - Auto state is useful when you only want to show a single popover at once.
+   * - Auto type is useful when you only want to show a single popover at once.
    * - The popover can be "light dismissed" — this means that you can hide the popover by clicking outside it.
    * - The popover can also be closed, using browser-specific mechanisms such as pressing the Esc key.
    * - Usually, only one auto popover can be shown at a time — showing a second popover when one is already shown will hide the first one. The exception to this rule is when you have nested auto popovers
@@ -39,11 +39,11 @@ export type PopoverOptions = {
    * - Multiple independent popovers can be shown simultaneously.
    *
    * ## Docs
-   * https://developer.mozilla.org/en-US/docs/Web/API/Popover_API/Using#auto_state_and_light_dismiss
+   * https://developer.mozilla.org/en-US/docs/Web/API/Popover_API/Using#auto_type_and_light_dismiss
    *
    * @default auto
    */
-  popoverState: PopoverType;
+  type: PopoverType;
   /**
    * Positions the popover relative to place on target
    *
@@ -56,12 +56,12 @@ export type PopoverOptions = {
    * Another follow up document: https://css-tricks.com/almanac/properties/p/position-anchor/#aa-method-2-position-area-property
    * @default `bottom`
    */
-  popoverPosition: PopoverPosition;
+  position: PopoverPosition;
   /**
    * The amount of space between the popover and it's associated target
    * @default 0
    */
-  popoverOffset: number;
+  offset: number;
 };
 
 type PopoverState = {
@@ -69,7 +69,7 @@ type PopoverState = {
   offset: number;
 };
 
-export const popoverPosition: PopoverPosition[] = [
+export const popoverPositions: PopoverPosition[] = [
   "bottom",
   "bottom-left",
   "bottom-right",
@@ -103,8 +103,8 @@ export class PopoverEngine {
 
   constructor(options?: Partial<PopoverOptions>) {
     const initState: PopoverState = {
-      position: options?.popoverPosition ?? "bottom",
-      offset: options?.popoverOffset ?? 0,
+      position: options?.position ?? "bottom",
+      offset: options?.offset ?? 0,
     };
     this._queue = new AsyncStateQueue(initState, this._log);
     this._popoverTargetAction = options?.popoverTargetAction ?? "toggle";
@@ -121,14 +121,14 @@ export class PopoverEngine {
     return this._queue.getState();
   }
 
-  protected _getPopover() {
+  getPopover() {
     if (!this._popover) {
       throw "Cannot get the popover. Popover has not been set.";
     }
     return this._popover;
   }
 
-  protected _getPopoverTarget() {
+  getPopoverTarget() {
     if (!this._popoverTarget) {
       throw "Cannot get the popover target. Popover target has not been set.";
     }
@@ -137,8 +137,8 @@ export class PopoverEngine {
 
   private _onToggle = (e: Event) => {
     const event = e as ToggleEvent;
-    const popover = this._getPopover();
-    const popoverTarget = this._getPopoverTarget();
+    const popover = this.getPopover();
+    const popoverTarget = this.getPopoverTarget();
 
     if (event.newState === "open") {
       this._log.debug("Showing popover");
@@ -155,12 +155,12 @@ export class PopoverEngine {
   };
 
   protected _isOpen() {
-    const popover = this._getPopover();
+    const popover = this.getPopover();
     return popover.matches(":popover-open");
   }
 
   private _browserSupportsPositionArea() {
-    const popover = this._getPopover();
+    const popover = this.getPopover();
     const supportsPositionArea = "positionArea" in popover.style;
     return supportsPositionArea;
   }
@@ -169,8 +169,8 @@ export class PopoverEngine {
     if (!this._currentState.position) {
       this._log.debug("No position set. Skipping positional calculations");
     }
-    const popover = this._getPopover();
-    const popoverTarget = this._getPopoverTarget();
+    const popover = this.getPopover();
+    const popoverTarget = this.getPopoverTarget();
     const supportsCSS = this._browserSupportsPositionArea();
     const rect = popoverTarget.getBoundingClientRect();
     const offset = this._currentState.offset;
@@ -368,14 +368,14 @@ export class PopoverEngine {
 
   show() {
     if (this._isOpen()) return;
-    const popover = this._getPopover();
+    const popover = this.getPopover();
     this._calculatePosition();
     popover.showPopover();
   }
 
   async hide() {
     if (!this._isOpen()) return;
-    const popover = this._getPopover();
+    const popover = this.getPopover();
     popover.hidePopover();
   }
 
