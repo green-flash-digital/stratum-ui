@@ -110,7 +110,9 @@ export class PopoverEngine {
     this._popoverTargetAction = options?.popoverTargetAction ?? "toggle";
     this._popoverType = "auto";
 
+    this.getPopover = this.getPopover.bind(this);
     this.setPopover = this.setPopover.bind(this);
+    this.getPopoverTarget = this.getPopoverTarget.bind(this);
     this.setPopoverTarget = this.setPopoverTarget.bind(this);
     this.show = this.show.bind(this);
     this.hide = this.hide.bind(this);
@@ -154,7 +156,7 @@ export class PopoverEngine {
     }
   };
 
-  protected _isOpen() {
+  isOpen() {
     const popover = this.getPopover();
     return popover.matches(":popover-open");
   }
@@ -367,14 +369,14 @@ export class PopoverEngine {
   }
 
   show() {
-    if (this._isOpen()) return;
+    if (this.isOpen()) return;
     const popover = this.getPopover();
     this._calculatePosition();
     popover.showPopover();
   }
 
   async hide() {
-    if (!this._isOpen()) return;
+    if (!this.isOpen()) return;
     const popover = this.getPopover();
     popover.hidePopover();
   }
