@@ -1,0 +1,58 @@
+{
+  "name": "@stratum-ui/core",
+  "version": "0.0.1",
+  "description": "The base interfaces and classes that can be used independently or integrated with any adapter",
+  "author": "Drew DeCarme (drew@greenflash.digital)",
+  "license": "Apache-2.0",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/green-flash-digital/stratum-ui.git",
+    "directory": "packages/core"
+  },
+  "bugs": {
+    "url": "https://github.com/green-flash-digital/stratum-ui/issues"
+  },
+  "homepage": "https://github.com/green-flash-digital/stratum-ui#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": null,
+    "./*": "./dist/*/_index.js",
+    "./*/css": "./dist/*/index.css",
+    "./*/styles": "./dist/*/styles.js"
+  },
+  "scripts": {
+    "build": "yarn tsx ./scripts/build.ts",
+    "dev": "yarn tsx ./scripts/dev.ts",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "devDependencies": {
+    "@babel/core": "7.27.1",
+    "@babel/preset-react": "7.27.1",
+    "@babel/preset-typescript": "7.27.1",
+    "@gfdigital/tsconfig": "^0.3.1",
+    "@linaria/babel-preset": "^5.0.4",
+    "@linaria/core": "6.3.0",
+    "@types/babel__core": "^7.20.5",
+    "@wyw-in-js/vite": "0.6.0",
+    "chokidar": "^4.0.3",
+    "postcss": "8.5.3",
+    "postcss-load-config": "6.0.1",
+    "postcss-modules": "6.0.1",
+    "postcss-nested": "^7.0.2",
+    "postcss-scss": "^4.0.9",
+    "postcss-strip-inline-comments": "0.1.5",
+    "sass": "^1.87.0",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3",
+    "vite": "6.3.5"
+  },
+  "dependencies": {
+    "immer": "^10.1.1",
+    "isoscribe": "^0.1.4",
+    "ts-jolt": "^0.2.3"
+  }
+}

@@ -1,8 +1,5 @@
 {
-  "cSpell.words": [
-    "gfdigital",
-    "staticly"
-  ],
+  "cSpell.words": ["gfdigital", "staticly", "Toggletip"],
   "search.exclude": {
     "**/.yarn": true,
     "**/.pnp.*": true

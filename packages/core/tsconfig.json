@@ -1,0 +1,7 @@
+{
+  "extends": "@gfdigital/tsconfig/library",
+  "compilerOptions": {
+    "allowJs": true
+  },
+  "include": ["src", "scripts"]
+}

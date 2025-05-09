@@ -12,3 +12,5 @@ bin
 .turbo
 *storybook.log
 storybook-static
+styles.js
+styles.ts
