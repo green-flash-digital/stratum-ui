@@ -19,7 +19,7 @@ export type ModalProperties = DialogProperties & {
   onMount: (node: HTMLDialogElement | null) => void;
 };
 
-export class ModalEngine<S extends DialogState = DialogState>
+export class ModalEngine<S extends ModalState = ModalState>
   extends DialogEngine<S>
   implements ModalProperties
 {
@@ -66,13 +66,13 @@ export class ModalEngine<S extends DialogState = DialogState>
     node.addEventListener("cancel", this._onCancel);
     node.addEventListener("close", this._onClose);
     node.addEventListener("click", this._onBackdropClick);
+  }
 
-    return () => {
-      // Attach event listeners once
-      node.removeEventListener("cancel", this._onCancel);
-      node.removeEventListener("close", this._onClose);
-      node.removeEventListener("click", this._onBackdropClick);
-    };
+  destroy() {
+    const dialog = this._getDialog();
+    dialog.removeEventListener("cancel", this._onCancel);
+    dialog.removeEventListener("close", this._onClose);
+    dialog.removeEventListener("click", this._onBackdropClick);
   }
 
   /**

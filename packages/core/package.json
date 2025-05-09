@@ -36,7 +36,7 @@
     "@gfdigital/tsconfig": "^0.3.1",
     "@linaria/babel-preset": "^5.0.4",
     "@linaria/core": "6.3.0",
-    "@types/babel__core": "^7",
+    "@types/babel__core": "^7.20.5",
     "@wyw-in-js/vite": "0.6.0",
     "chokidar": "^4.0.3",
     "postcss": "8.5.3",
