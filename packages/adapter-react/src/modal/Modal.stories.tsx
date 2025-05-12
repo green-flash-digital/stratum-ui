@@ -4,7 +4,7 @@ import { ModalEngine } from "@stratum-ui/core/modal";
 import { useModal } from "./modal.useModal.js";
 
 const meta: Meta = {
-  title: "Modal",
+  title: "React / Modal",
 } satisfies Meta<typeof meta>;
 
 export default meta;
