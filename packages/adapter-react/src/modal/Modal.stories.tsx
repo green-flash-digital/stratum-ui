@@ -1,5 +1,7 @@
 import type { Meta } from "@storybook/react";
 import { ModalEngine } from "@stratum-ui/core/modal";
+import { styles } from "@stratum-ui/core/modal/styles";
+import "@stratum-ui/core/modal/css";
 
 import { useModal } from "./modal.useModal.js";
 
@@ -79,6 +81,27 @@ export const PreventClosingOnEscape = () => {
     <>
       <button onClick={engine.open}>Open Modal</button>
       <dialog ref={engine.onMount}>
+        <header>Header</header>
+        <div>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni culpa
+          earum necessitatibus nemo officia quam illo reiciendis. Quia harum
+          doloribus officiis. Aliquam voluptate porro hic molestias possimus ea
+          voluptatum libero?
+        </div>
+        <footer>
+          <button onClick={engine.close}>close</button>
+        </footer>
+      </dialog>
+    </>
+  );
+};
+
+export const WithDefaultStyles = () => {
+  const engine = useModal();
+  return (
+    <>
+      <button onClick={engine.open}>Open Modal</button>
+      <dialog ref={engine.onMount} className={styles.base}>
         <header>Header</header>
         <div>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni culpa
