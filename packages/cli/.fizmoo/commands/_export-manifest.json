@@ -1,58 +1,56 @@
 {
   "react": {
-    "meta": {
-      "path": "/Users/drewdecarme/git/green-flash-digital/company/stratum-ui/packages/adapter-react"
-    },
+    "packageJson": "@stratum-ui/react/package.json",
     "modules": {
       "control:button": {
         "displayName": "button",
         "category": "control",
-        "path": "@stratum-ui/react/src/control:button"
+        "sourcePath": "src/control:button"
       },
       "control:input-checkbox": {
         "displayName": "input-checkbox",
         "category": "control",
-        "path": "@stratum-ui/react/src/control:input-checkbox"
+        "sourcePath": "src/control:input-checkbox"
       },
       "control:input-radio": {
         "displayName": "input-radio",
         "category": "control",
-        "path": "@stratum-ui/react/src/control:input-radio"
+        "sourcePath": "src/control:input-radio"
       },
       "control:input-switch": {
         "displayName": "input-switch",
         "category": "control",
-        "path": "@stratum-ui/react/src/control:input-switch"
+        "sourcePath": "src/control:input-switch"
       },
       "control:input-text": {
         "displayName": "input-text",
         "category": "control",
-        "path": "@stratum-ui/react/src/control:input-text"
+        "sourcePath": "src/control:input-text"
       },
       "control:link": {
         "displayName": "link",
         "category": "control",
-        "path": "@stratum-ui/react/src/control:link"
+        "sourcePath": "src/control:link"
       },
       "overlay:modal": {
         "displayName": "modal",
         "category": "overlay",
-        "path": "@stratum-ui/react/src/overlay:modal"
+        "sourcePath": "src/overlay:modal"
       },
       "overlay:popover": {
         "displayName": "popover",
         "category": "overlay",
-        "path": "@stratum-ui/react/src/overlay:popover"
+        "sourcePath": "src/overlay:popover"
       },
       "overlay:toggletip": {
         "displayName": "toggletip",
         "category": "overlay",
-        "path": "@stratum-ui/react/src/overlay:toggletip"
+        "sourcePath": "src/overlay:toggletip"
       },
       "overlay:tooltip": {
         "displayName": "tooltip",
         "category": "overlay",
-        "path": "@stratum-ui/react/src/overlay:tooltip"
+        "sourcePath": "src/overlay:tooltip"
       }
     }
   }

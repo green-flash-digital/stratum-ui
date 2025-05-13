@@ -17,13 +17,13 @@ const MANIFEST_OUT_PATH = path.resolve(
 );
 type ManifestModules = Record<
   string,
-  { displayName: string; category: string; path: string }
+  { displayName: string; category: string; sourcePath: string }
 >;
 
 async function createManifest() {
   const manifest = new Map<
     string,
-    { meta: { path: string }; modules: ManifestModules }
+    { packageJson: string; modules: ManifestModules }
   >();
 
   const packageDirents = await readdir(PACKAGE_ROOT_DIR, {
@@ -48,18 +48,20 @@ async function createManifest() {
       if (!dirent.isDirectory()) return accum;
       const [category, displayName] = dirent.name.split(":");
       const absPath = path.join(dirent.parentPath, dirent.name);
-      const relPath = path.relative(directory, absPath);
-      const importPath = path.join("@stratum-ui", adapter, relPath);
+      const sourcePath = path.relative(directory, absPath);
 
       return Object.assign<ManifestModules, ManifestModules>(accum, {
         [dirent.name]: {
           displayName,
           category,
-          path: importPath,
+          sourcePath,
         },
       });
     }, {});
-    manifest.set(adapter, { meta: { path: directory }, modules });
+    manifest.set(adapter, {
+      packageJson: path.join("@stratum-ui", adapter, "package.json"),
+      modules,
+    });
   }
 
   const manifestContent = JSON.stringify(

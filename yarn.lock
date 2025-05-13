@@ -47,7 +47,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:7.27.1, @babel/core@npm:^7.18.9, @babel/core@npm:^7.22.15, @babel/core@npm:^7.23.5":
+"@babel/core@npm:7.27.1, @babel/core@npm:^7.18.9, @babel/core@npm:^7.22.15, @babel/core@npm:^7.23.5, @babel/core@npm:^7.27.1":
   version: 7.27.1
   resolution: "@babel/core@npm:7.27.1"
   dependencies:
@@ -298,6 +298,17 @@ __metadata:
   bin:
     parser: ./bin/babel-parser.js
   checksum: 10c0/ae4a5eda3ada3fd54c9942d9f14385df7a18e71b386cf2652505bb9a40a32250dfde3bdda71fb08af00b1e154f0a6213e6cdaaa88e9941229ec0003f7fead759
+  languageName: node
+  linkType: hard
+
+"@babel/parser@npm:^7.27.2":
+  version: 7.27.2
+  resolution: "@babel/parser@npm:7.27.2"
+  dependencies:
+    "@babel/types": "npm:^7.27.1"
+  bin:
+    parser: ./bin/babel-parser.js
+  checksum: 10c0/3c06692768885c2f58207fc8c2cbdb4a44df46b7d93135a083f6eaa49310f7ced490ce76043a2a7606cdcc13f27e3d835e141b692f2f6337a2e7f43c1dbb04b4
   languageName: node
   linkType: hard
 
@@ -2086,7 +2097,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gfdigital/tsconfig@npm:0.3.1, @gfdigital/tsconfig@npm:^0.3.1":
+"@gfdigital/tsconfig@npm:0.3.1":
   version: 0.3.1
   resolution: "@gfdigital/tsconfig@npm:0.3.1"
   checksum: 10c0/eeb95f2303bae296a24393f46f3a498bef64d3844a0814ae75ad48c21b7ca6658a76247e35266a0da1474152aca5e6d60b74bca8739a1455fdf199c14378a21a
@@ -2293,7 +2304,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@inquirer/prompts@npm:^7.5.1":
+"@inquirer/prompts@npm:7.5.1":
   version: 7.5.1
   resolution: "@inquirer/prompts@npm:7.5.1"
   dependencies:
@@ -3407,12 +3418,17 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@stratum-ui/cli@workspace:packages/cli"
   dependencies:
-    "@gfdigital/tsconfig": "npm:^0.3.1"
-    "@inquirer/prompts": "npm:^7.5.1"
-    fizmoo: "npm:^0.1.2"
+    "@babel/core": "npm:^7.27.1"
+    "@babel/parser": "npm:^7.27.2"
+    "@gfdigital/tsconfig": "npm:0.3.1"
+    "@inquirer/prompts": "npm:7.5.1"
+    "@stratum-ui/core": "npm:0.1.0"
+    "@stratum-ui/react": "npm:0.1.0"
+    "@types/babel__core": "npm:^7"
+    fizmoo: "npm:0.1.2"
     isoscribe: "npm:^0.2.0"
-    ts-jolt: "npm:^0.2.3"
-    tsx: "npm:^4.19.4"
+    ts-jolt: "npm:0.2.3"
+    tsx: "npm:4.19.4"
   bin:
     stratum: ./bin/index.js
   languageName: unknown
@@ -3447,7 +3463,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@stratum-ui/react@workspace:packages/adapter-react":
+"@stratum-ui/react@npm:0.1.0, @stratum-ui/react@workspace:packages/adapter-react":
   version: 0.0.0-use.local
   resolution: "@stratum-ui/react@workspace:packages/adapter-react"
   dependencies:
@@ -3573,7 +3589,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/babel__core@npm:7.20.5, @types/babel__core@npm:^7.18.0":
+"@types/babel__core@npm:7.20.5, @types/babel__core@npm:^7, @types/babel__core@npm:^7.18.0":
   version: 7.20.5
   resolution: "@types/babel__core@npm:7.20.5"
   dependencies:
@@ -6071,7 +6087,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fizmoo@npm:^0.1.2":
+"fizmoo@npm:0.1.2":
   version: 0.1.2
   resolution: "fizmoo@npm:0.1.2"
   dependencies:
@@ -9604,7 +9620,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsx@npm:4.19.4, tsx@npm:^4.19.4":
+"tsx@npm:4.19.4":
   version: 4.19.4
   resolution: "tsx@npm:4.19.4"
   dependencies:
