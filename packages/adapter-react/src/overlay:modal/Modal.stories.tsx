@@ -6,7 +6,7 @@ import "@stratum-ui/core/modal/css";
 import { useModal } from "./modal.useModal.js";
 
 const meta: Meta = {
-  title: "React / Modal",
+  title: "React / Overlay / Modal",
 } satisfies Meta<typeof meta>;
 
 export default meta;

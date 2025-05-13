@@ -1,0 +1,38 @@
+{
+  "name": "@stratum-ui/cli",
+  "version": "0.1.0",
+  "description": "The Stratum UI CLI to export components",
+  "author": "Drew DeCarme (drew@greenflash.digital)",
+  "license": "Apache-2.0",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/green-flash-digital/stratum-ui.git",
+    "directory": "packages/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/green-flash-digital/stratum-ui/issues"
+  },
+  "homepage": "https://github.com/green-flash-digital/stratum-ui#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "manifest": "yarn tsx ./scripts/create-export-manifest.ts",
+    "build": "yarn fizmoo build",
+    "dev": "yarn fizmoo dev"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^7.5.1",
+    "fizmoo": "^0.1.2",
+    "isoscribe": "^0.2.0",
+    "ts-jolt": "^0.2.3"
+  },
+  "devDependencies": {
+    "@gfdigital/tsconfig": "^0.3.1",
+    "tsx": "^4.19.4"
+  },
+  "bin": {
+    "stratum": "./bin/index.js"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "$schema": "https://schemas.greenflash.digital/fizmoo.json",
+  "name": "stratum",
+  "description": "The Stratum UI CLI to export components",
+  "version": "0.0.1",
+  "commandsDir": "./commands"
+}

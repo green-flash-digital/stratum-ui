@@ -9,7 +9,7 @@ import { classes } from "@stratum-ui/core/utils";
 import { usePopover } from "./popover.usePopover.js";
 
 const meta: Meta = {
-  title: "React / Popover",
+  title: "React / Overlay / Popover",
   parameters: {
     layout: "centered",
   },
