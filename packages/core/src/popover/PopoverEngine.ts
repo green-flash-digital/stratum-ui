@@ -1,8 +1,8 @@
 import { Isoscribe } from "isoscribe";
 import { exhaustiveMatchGuard, generateGUID } from "ts-jolt/isomorphic";
 
-import type { SetAsyncStateQueueState } from "../async-queue/AsyncStateQueue.js";
-import { AsyncStateQueue } from "../async-queue/AsyncStateQueue.js";
+import type { SetAsyncStateQueueState } from "__STRATUM__/async-queue/AsyncStateQueue.js";
+import { AsyncStateQueue } from "__STRATUM__/async-queue/AsyncStateQueue.js";
 
 export type PopoverTargetAction = "show" | "hide" | "toggle";
 export type PopoverType = "auto" | "manual" | "hint";

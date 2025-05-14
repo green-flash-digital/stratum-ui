@@ -1,4 +1,7 @@
-import type { ModalState, ModalEngine } from "@stratum-ui/core/modal";
+import type {
+  ModalState,
+  ModalEngine,
+} from "../../../../core/dist/modal/_ndex.js";
 import { type RefCallback, type ReactNode, useMemo } from "react";
 import { useSyncExternalStore } from "react";
 

@@ -1,5 +1,5 @@
-import type { ToggletipOptions } from "@stratum-ui/core/toggletip";
-import { ToggletipEngine } from "@stratum-ui/core/toggletip";
+import type { ToggletipOptions } from "../../../../core/dist/toggletip/index.js";
+import { ToggletipEngine } from "../../../../core/dist/toggletip/index.js";
 import { useEffect, useRef } from "react";
 
 export function useToggletip(options?: Partial<ToggletipOptions>) {

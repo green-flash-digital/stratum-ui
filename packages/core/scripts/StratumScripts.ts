@@ -60,7 +60,7 @@ export class StratumScripts {
         const entryFilePath = path.join(
           dirent.parentPath,
           dirent.name,
-          "./_index.ts"
+          "./index.ts"
         );
         const outDir = path.resolve(this._ROOT_DIR_DIST, dirent.name);
         const packageName = path.relative(
@@ -148,6 +148,11 @@ export class StratumScripts {
       },
       logLevel: "silent",
       clearScreen: false,
+      resolve: {
+        alias: {
+          __STRATUM__: path.resolve(import.meta.dirname, "../src"),
+        },
+      },
       build: {
         outDir: manifestEntry.outDir,
         lib: {
@@ -175,7 +180,7 @@ export class StratumScripts {
     try {
       const styleFilePath = path.resolve(
         manifestEntry.entryDir,
-        "./_styles.scss"
+        "./index.styles.scss"
       );
       const styleFileContent = await readFile(styleFilePath, {});
       return { styleFileContent, styleFilePath };

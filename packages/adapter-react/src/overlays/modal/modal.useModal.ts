@@ -1,5 +1,5 @@
-import type { ModalOptions } from "@stratum-ui/core/modal";
-import { ModalEngine } from "@stratum-ui/core/modal";
+import type { ModalOptions } from "../../../../core/dist/modal/_ndex.js";
+import { ModalEngine } from "../../../../core/dist/modal/_ndex.js";
 import { useEffect, useRef } from "react";
 
 export function useModal(options?: Partial<ModalOptions>): ModalEngine {

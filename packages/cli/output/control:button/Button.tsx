@@ -4,7 +4,7 @@ import { forwardRef } from "react";
 import { styles } from "@stratum-ui/core/popover/styles";
 import "@stratum-ui/core/popover/css";
 
-import { usePopover } from "__STRATUM__/overlay:popover/index.js";
+import { usePopover } from "../overlay:popover/index.js";
 
 export type ButtonPropsNative = JSX.IntrinsicElements["button"];
 // export type ButtonPropsCustom = {};

@@ -1,7 +1,7 @@
 import { generateGUID } from "ts-jolt/isomorphic";
 
-import type { PopoverOptions } from "../popover/PopoverEngine.js";
-import { PopoverEngine } from "../popover/PopoverEngine.js";
+import type { PopoverOptions } from "__STRATUM__/popover/PopoverEngine.js";
+import { PopoverEngine } from "__STRATUM__/popover/PopoverEngine.js";
 
 export type TooltipType = "label" | "clarification";
 export type TooltipOptions = Partial<

@@ -4,8 +4,8 @@ import type {
   DialogOptions,
   DialogProperties,
   DialogState,
-} from "../dialog/DialogEngine.js";
-import { DialogEngine } from "../dialog/DialogEngine.js";
+} from "__STRATUM__/dialog/DialogEngine.js";
+import { DialogEngine } from "__STRATUM__/dialog/DialogEngine.js";
 
 export type ModalState = DialogState;
 export type ModalOptions = DialogOptions & {

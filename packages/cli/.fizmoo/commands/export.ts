@@ -39,74 +39,9 @@ export const action: Action = async () => {
   LOG.debug("Selected modules", moduleKeys);
 
   const dependencies = new Set<string>();
-
   const DEPENDENCY_ID = "__STRATUM__";
 
-  // An inline recursive function that will recursively search through all directories
-  // and look for any dependencies. All dependencies are identified with `@BUTTERY_COMPONENT`.
-  // if dependencies are found, then it will recursively look through all of those files as well
-  // which will output in a list of all of the components that need to be exported
-  function registerComponentIntraDependencies(
-    directoryPath: string,
-    options: { sourceRoot: string }
-  ) {
-    const directoryContents = readdirSync(directoryPath, {
-      withFileTypes: true,
-    });
-    for (const dirent of directoryContents) {
-      // If the contents is a directory, then recurse the function again.
-      // At this point we're not including any examples in the output.
-      if (dirent.isDirectory() && dirent.name !== "examples") {
-        const innerDirectoryPath = path.join(dirent.parentPath, dirent.name);
-        console.log({ innerDirectoryPath });
-        return registerComponentIntraDependencies(innerDirectoryPath, options);
-      }
-
-      // Since it's a file, we want to turn it into an abstract syntax tree
-      // and then parse it to read the imports. This way to can start to determine
-      // if the the imports have other intra-dependencies.
-      if (dirent.isFile()) {
-        const innerFilePath = path.join(dirent.parentPath, dirent.name);
-        LOG.debug(`Registering dependencies in: ${innerFilePath}`);
-
-        // parse the file
-        const code = readFileSync(innerFilePath, "utf-8");
-        const ast = parse(code, {
-          sourceType: "module",
-          plugins: [
-            "typescript", // Enable TypeScript syntax parsing
-            "jsx", // Enable JSX syntax parsing
-          ],
-        });
-
-        traverse(ast, {
-          ImportDeclaration: ({ node }) => {
-            const importPath = node.source.value;
-            if (
-              importPath.startsWith(DEPENDENCY_ID) &&
-              !dependencies.has(importPath) // prevents unnecessary traversal for deps already registered
-            ) {
-              const dependencyPath = importPath.split(DEPENDENCY_ID)[1]
-              const innerDependencyDir = path.dirname(
-                path.join(
-                  options.sourceRoot,
-                  dependencyPath
-                )
-              );
-              dependencies.add(dependencyPath.replace("/index.js", ""));
-
-              // we know this directory since our component directory always starts at the root dir.
-              // the alias is nested directly under the root dir so we can assume that the inner dependency
-              // directory is at the rootComponentDir + the innerDependencyFileName
-
-              // recursively register other intra-dependencies in the other component directory.
-              registerComponentIntraDependencies(innerDependencyDir, options);
-            }
-          },
-        });
-      }
-    }
-  }
+  
 
   for (const moduleKey of moduleKeys) {
     const moduleGraph = manifest[adapter].modules[moduleKey];

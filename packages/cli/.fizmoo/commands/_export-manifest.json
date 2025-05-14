@@ -2,55 +2,43 @@
   "react": {
     "packageJson": "@stratum-ui/react/package.json",
     "modules": {
-      "control:button": {
-        "displayName": "button",
-        "category": "control",
-        "sourcePath": "src/control:button"
-      },
-      "control:input-checkbox": {
-        "displayName": "input-checkbox",
-        "category": "control",
-        "sourcePath": "src/control:input-checkbox"
-      },
-      "control:input-radio": {
-        "displayName": "input-radio",
-        "category": "control",
-        "sourcePath": "src/control:input-radio"
-      },
-      "control:input-switch": {
-        "displayName": "input-switch",
-        "category": "control",
-        "sourcePath": "src/control:input-switch"
-      },
-      "control:input-text": {
-        "displayName": "input-text",
-        "category": "control",
-        "sourcePath": "src/control:input-text"
-      },
-      "control:link": {
-        "displayName": "link",
-        "category": "control",
-        "sourcePath": "src/control:link"
-      },
-      "overlay:modal": {
+      "modal": {
         "displayName": "modal",
-        "category": "overlay",
-        "sourcePath": "src/overlay:modal"
+        "category": "overlays",
+        "sourcePath": "src/overlays/modal",
+        "dependsOn": []
       },
-      "overlay:popover": {
+      "popover": {
         "displayName": "popover",
-        "category": "overlay",
-        "sourcePath": "src/overlay:popover"
+        "category": "overlays",
+        "sourcePath": "src/overlays/popover",
+        "dependsOn": []
       },
-      "overlay:toggletip": {
+      "toggletip": {
         "displayName": "toggletip",
-        "category": "overlay",
-        "sourcePath": "src/overlay:toggletip"
+        "category": "overlays",
+        "sourcePath": "src/overlays/toggletip",
+        "dependsOn": []
       },
-      "overlay:tooltip": {
+      "tooltip": {
         "displayName": "tooltip",
-        "category": "overlay",
-        "sourcePath": "src/overlay:tooltip"
+        "category": "overlays",
+        "sourcePath": "src/overlays/tooltip",
+        "dependsOn": []
+      },
+      "button": {
+        "displayName": "button",
+        "category": "controls",
+        "sourcePath": "src/controls/button",
+        "dependsOn": [
+          "/overlays/popover"
+        ]
+      },
+      "link": {
+        "displayName": "link",
+        "category": "controls",
+        "sourcePath": "src/controls/link",
+        "dependsOn": []
       }
     }
   }
