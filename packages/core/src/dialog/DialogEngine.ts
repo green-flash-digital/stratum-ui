@@ -4,7 +4,7 @@ import { Isoscribe } from "isoscribe";
 import {
   AsyncStateQueue,
   type SetAsyncStateQueueState,
-} from "__STRATUM__/async-queue/AsyncStateQueue.js";
+} from "../async-queue/AsyncStateQueue.js";
 
 export type DialogState = Record<string, unknown>;
 

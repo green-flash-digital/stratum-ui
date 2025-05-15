@@ -19,9 +19,10 @@
   },
   "exports": {
     ".": null,
-    "./*": "./dist/*/_index.js",
+    "./*": "./dist/*/index.js",
     "./*/css": "./dist/*/index.css",
-    "./*/styles": "./dist/*/styles.js"
+    "./*/styles": "./dist/*/styles.js",
+    "./package.json": "./package.json"
   },
   "scripts": {
     "build": "yarn tsx ./scripts/build.ts",

@@ -1,8 +1,8 @@
-import { classes } from "../../../../core/dist/utils/index.js";
 import type { JSX } from "react";
 import { forwardRef } from "react";
 import { styles } from "@stratum-ui/core/popover/styles";
 import "@stratum-ui/core/popover/css";
+import { classes } from "@stratum-ui/core/utils";
 
 import { usePopover } from "__STRATUM__/overlays/popover/index.js";
 

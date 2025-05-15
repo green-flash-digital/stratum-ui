@@ -1,10 +1,7 @@
 {
   "extends": "@gfdigital/tsconfig/library",
   "compilerOptions": {
-    "rootDir": ".",
-    "paths": {
-      "__STRATUM__/*": ["./src/*"]
-    }
+    "allowJs": true
   },
   "include": ["src", "scripts"]
 }

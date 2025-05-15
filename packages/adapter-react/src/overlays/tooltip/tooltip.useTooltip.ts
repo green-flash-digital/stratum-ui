@@ -1,5 +1,5 @@
-import type { TooltipOptions } from "../../../../core/dist/tooltip/index.js";
-import { TooltipEngine } from "../../../../core/dist/tooltip/index.js";
+import type { TooltipOptions } from "@stratum-ui/core/tooltip";
+import { TooltipEngine } from "@stratum-ui/core/tooltip";
 import { useEffect, useRef } from "react";
 
 export function useTooltip(options?: Partial<TooltipOptions>) {

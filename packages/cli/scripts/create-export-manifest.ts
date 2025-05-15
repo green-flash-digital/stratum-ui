@@ -1,11 +1,14 @@
-import { constants, readdir } from "node:fs/promises";
+import { constants, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import type { Dirent } from "node:fs";
 import { accessSync, readdirSync, readFileSync } from "node:fs";
+import { createRequire } from "module";
 
 import { Isoscribe } from "isoscribe";
 import { traverse } from "@babel/core";
 import { parse } from "@babel/parser";
+
+const require = createRequire(import.meta.url);
 
 const LOG = new Isoscribe({
   name: "@stratum-ui:cli:scripts",
@@ -20,73 +23,103 @@ const MANIFEST_OUT_PATH = path.resolve(
   "../.fizmoo/commands/_export-manifest.json"
 );
 
-type ManifestModules = Record<
-  string,
-  {
-    displayName: string;
-    category: string;
-    relPath: string;
-    dependsOn: string[];
-  }
->;
-
 try {
   createManifest();
 } catch (error) {
   printError(error);
 }
 
+type Manifest = Map<
+  string,
+  {
+    pkg: string;
+    srcDir: string;
+    displayName: string;
+    dependencies: string[];
+  }
+>;
+
 async function createManifest() {
   // const manifest = new Map<
   //   string,
   //   { packageJson: string; modules: ManifestModules }
   // >();
-  const manifest = new Map<
-    string,
-    { displayName: string; dependencies: { local: string[]; core: string[] } }
-  >();
+  const manifest: Manifest = new Map();
 
-  const spaceDirents = await readdir(PACKAGE_ROOT_DIR, {
+  // Read the package directory
+  const pkgDirents = await readdir(PACKAGE_ROOT_DIR, {
     encoding: "utf8",
     withFileTypes: true,
   });
 
-  for (const spaceDirent of spaceDirents) {
-    if (spaceDirent.name !== "core" || spaceDirent.name.includes("adapter-")) {
+  // Loop through all of the dirents inside of /packages
+  for (const pkgDirent of pkgDirents) {
+    // Parse the package and then add it to the manifest.packages map
+    if (pkgDirent.name !== "core" && !pkgDirent.name.includes("adapter-")) {
       continue;
     }
-    const spaceName = spaceDirent.name.replace("adapter-", "");
-    console.log(spaceDirent.name);
+    const pkgName = normalizePackageName(pkgDirent.name);
+    const pkgDirRoot = path.join(pkgDirent.parentPath, pkgDirent.name);
+    const pkgDirSrc = path.join(pkgDirRoot, "./src");
 
-    const spaceDirRoot = path.join(spaceDirent.parentPath, spaceDirent.name);
-    const spaceDirSrc = path.join(spaceDirRoot, "./src");
-    const _spacePackageJson = path.resolve(spaceDirRoot, "./package.json");
-    const moduleDirents = await readdir(spaceDirSrc, {
+    // Get all of the dirents inside of each package
+    const moduleDirents = await readdir(pkgDirSrc, {
       withFileTypes: true,
       recursive: true,
     });
 
+    // Loop through all of the dirents
     for (const moduleDirent of moduleDirents) {
+      // Check to see if any of the directories has a barrel file. If it does
+      // then we can assume that the module is worth parsing and creating a dependency
+      // tree for
       const moduleHasBarrelFile = direntHasBarrelFile(moduleDirent);
       if (!moduleHasBarrelFile) continue;
 
-      const modulePath = path.join(moduleDirent.parentPath, moduleDirent.name);
-      const modulePathSrc = path.relative(spaceDirSrc, modulePath);
-      const moduleSegments = modulePathSrc.split("/");
-      const moduleId = [spaceName, ...moduleSegments].join(":");
-      console.log({ moduleId });
+      const moduleDir = path.join(moduleDirent.parentPath, moduleDirent.name);
+      const moduleRootDir = normalizePackageName(
+        path.relative(pkgDirRoot, moduleDir)
+      );
+
+      const moduleId = getModuleIdFromPath(moduleDir, pkgName);
+      LOG.debug(``);
+      LOG.debug(`Registering "${moduleId}"`);
 
       const dependencies = new Set<string>();
-      registerComponentIntraDependencies(modulePath, {
-        IMPORT_ID_CORE: "@stratum-ui/core",
-        IMPORT_ID_RELATIVE: "__STRATUM__",
-        sourceRoot: spaceDirSrc,
+      registerComponentIntraDependencies(moduleDir, {
+        pckSrcDir: pkgDirSrc,
+        pkgName: pkgName,
         store: dependencies,
+      });
+
+      manifest.set(moduleId, {
+        displayName: moduleDirent.name,
+        pkg: path.join("@stratum-ui", pkgName),
+        srcDir: moduleRootDir,
+        dependencies: [...dependencies.values()],
       });
     }
   }
 
-  // await writeFile(MANIFEST_OUT_PATH, manifestContent);
+  const manifestContent = JSON.stringify(
+    Object.fromEntries(manifest.entries()),
+    null,
+    2
+  );
+  await writeFile(MANIFEST_OUT_PATH, manifestContent);
+}
+
+function getModuleIdFromPath(modulePath: string, pkgName: string) {
+  const segments = modulePath
+    .split(`${pkgName}/src`)[1]
+    .split("/")
+    .filter(Boolean);
+  const moduleId = [pkgName, ...segments].join(":");
+  return moduleId;
+}
+
+function normalizePackageName(pathOrName: string) {
+  return pathOrName.replace("adapter-", "");
 }
 
 /**
@@ -111,10 +144,9 @@ function direntHasBarrelFile(dirent: Dirent<string>) {
 function registerComponentIntraDependencies(
   directoryPath: string,
   options: {
-    sourceRoot: string;
+    pckSrcDir: string;
+    pkgName: string;
     store: Set<string>;
-    IMPORT_ID_RELATIVE: string;
-    IMPORT_ID_CORE: string;
   }
 ) {
   const directoryContents = readdirSync(directoryPath, {
@@ -132,9 +164,9 @@ function registerComponentIntraDependencies(
     // Since it's a file, we want to turn it into an abstract syntax tree
     // and then parse it to read the imports. This way to can start to determine
     // if the the imports have other intra-dependencies.
-    if (dirent.isFile()) {
+    if (dirent.isFile() && !dirent.name.endsWith(".scss")) {
       const innerFilePath = path.join(dirent.parentPath, dirent.name);
-      LOG.debug(`Registering dependencies in: ${innerFilePath}`);
+      LOG.debug(` |- Processing: ${dirent.name}`);
 
       // parse the file
       const code = readFileSync(innerFilePath, "utf-8");
@@ -149,26 +181,31 @@ function registerComponentIntraDependencies(
       traverse(ast, {
         ImportDeclaration: ({ node }) => {
           const importPath = node.source.value;
-          console.log({ importPath });
 
-          if (
-            importPath.startsWith(options.IMPORT_ID_RELATIVE) &&
-            !options.store.has(importPath) // prevents unnecessary traversal for deps already registered
-          ) {
-            const dependencyPath = importPath.split(
-              options.IMPORT_ID_RELATIVE
-            )[1];
-            const innerDependencyDir = path.dirname(
-              path.join(options.sourceRoot, dependencyPath)
+          if (options.store.has(importPath)) return;
+
+          if (importPath.startsWith("@stratum-ui/core")) {
+            const distPath = require.resolve(importPath);
+            const moduleDir = path.dirname(distPath.replace("dist", "src"));
+            const id = getModuleIdFromPath(moduleDir, "core");
+            LOG.debug(`   |- Located 'core' dependency`, id);
+            options.store.add(id);
+          }
+
+          if (importPath.startsWith("..")) {
+            const moduleDir = path.dirname(
+              path.resolve(directoryPath, importPath)
             );
-            options.store.add(dependencyPath.replace("/index.js", ""));
+            const id = getModuleIdFromPath(moduleDir, options.pkgName);
+            LOG.debug(`   |- Located 'local' dependency`, id);
+            options.store.add(id);
 
             // we know this directory since our component directory always starts at the root dir.
             // the alias is nested directly under the root dir so we can assume that the inner dependency
             // directory is at the rootComponentDir + the innerDependencyFileName
 
             // recursively register other intra-dependencies in the other component directory.
-            registerComponentIntraDependencies(innerDependencyDir, options);
+            registerComponentIntraDependencies(moduleDir, options);
           }
         },
       });

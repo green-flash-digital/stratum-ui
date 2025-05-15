@@ -1,4 +1,4 @@
-import { classes } from "../../../../core/dist/utils/index.js";
+import { classes } from "@stratum-ui/core/utils";
 import { forwardRef, type JSX } from "react";
 
 export type LinkPropsNative = JSX.IntrinsicElements["a"];

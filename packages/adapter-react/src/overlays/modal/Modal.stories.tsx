@@ -1,6 +1,6 @@
 import type { Meta } from "@storybook/react";
-import { ModalEngine } from "../../../../core/dist/modal/_ndex.js";
 import { styles } from "@stratum-ui/core/modal/styles";
+import { ModalEngine } from "@stratum-ui/core/modal";
 import "@stratum-ui/core/modal/css";
 
 import { useModal } from "./modal.useModal.js";

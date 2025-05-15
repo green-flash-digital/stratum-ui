@@ -1,13 +1,10 @@
 import type { Meta } from "@storybook/react";
 import { css } from "@linaria/core";
-import type { PopoverPosition } from "../../../../core/dist/popover/index.js";
-import {
-  PopoverEngine,
-  popoverPositions,
-} from "../../../../core/dist/popover/index.js";
 import "@stratum-ui/core/popover/css";
 import { styles } from "@stratum-ui/core/popover/styles";
-import { classes } from "../../../../core/dist/utils/index.js";
+import type { PopoverPosition } from "@stratum-ui/core/popover";
+import { PopoverEngine, popoverPositions } from "@stratum-ui/core/popover";
+import { classes } from "@stratum-ui/core/utils";
 
 import { usePopover } from "./popover.usePopover.js";
 
