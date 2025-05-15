@@ -33,7 +33,8 @@ type Manifest = Map<
   string,
   {
     pkg: string;
-    srcDir: string;
+    pkgImportPath: string;
+    modSrcDir: string;
     displayName: string;
     dependencies: string[];
   }
@@ -81,7 +82,7 @@ async function createManifest() {
         path.relative(pkgDirRoot, moduleDir)
       );
 
-      const moduleId = getModuleIdFromPath(moduleDir, pkgName);
+      const moduleId = normalizeModuleId(pkgName, moduleDirent.name);
       LOG.debug(``);
       LOG.debug(`Registering "${moduleId}"`);
 
@@ -94,8 +95,9 @@ async function createManifest() {
 
       manifest.set(moduleId, {
         displayName: moduleDirent.name,
-        pkg: path.join("@stratum-ui", pkgName),
-        srcDir: moduleRootDir,
+        pkg: pkgName,
+        pkgImportPath: path.join("@stratum-ui", pkgName),
+        modSrcDir: moduleRootDir,
         dependencies: [...dependencies.values()],
       });
     }
@@ -109,12 +111,8 @@ async function createManifest() {
   await writeFile(MANIFEST_OUT_PATH, manifestContent);
 }
 
-function getModuleIdFromPath(modulePath: string, pkgName: string) {
-  const segments = modulePath
-    .split(`${pkgName}/src`)[1]
-    .split("/")
-    .filter(Boolean);
-  const moduleId = [pkgName, ...segments].join(":");
+function normalizeModuleId(pkgName: string, moduleName: string) {
+  const moduleId = [pkgName, moduleName].join(":");
   return moduleId;
 }
 
@@ -142,14 +140,14 @@ function direntHasBarrelFile(dirent: Dirent<string>) {
 // if dependencies are found, then it will recursively look through all of those files as well
 // which will output in a list of all of the components that need to be exported
 function registerComponentIntraDependencies(
-  directoryPath: string,
+  moduleDir: string,
   options: {
     pckSrcDir: string;
     pkgName: string;
     store: Set<string>;
   }
 ) {
-  const directoryContents = readdirSync(directoryPath, {
+  const directoryContents = readdirSync(moduleDir, {
     withFileTypes: true,
   });
   for (const dirent of directoryContents) {
@@ -186,26 +184,21 @@ function registerComponentIntraDependencies(
 
           if (importPath.startsWith("@stratum-ui/core")) {
             const distPath = require.resolve(importPath);
-            const moduleDir = path.dirname(distPath.replace("dist", "src"));
-            const id = getModuleIdFromPath(moduleDir, "core");
+            const modDir = path.dirname(distPath.replace("dist", "src"));
+            const id = normalizeModuleId("core", path.basename(modDir));
             LOG.debug(`   |- Located 'core' dependency`, id);
             options.store.add(id);
           }
 
           if (importPath.startsWith("..")) {
-            const moduleDir = path.dirname(
-              path.resolve(directoryPath, importPath)
-            );
-            const id = getModuleIdFromPath(moduleDir, options.pkgName);
+            const modDir = path.dirname(path.resolve(moduleDir, importPath));
+            const moduleName = path.basename(modDir);
+            const id = normalizeModuleId(options.pkgName, moduleName);
             LOG.debug(`   |- Located 'local' dependency`, id);
             options.store.add(id);
 
-            // we know this directory since our component directory always starts at the root dir.
-            // the alias is nested directly under the root dir so we can assume that the inner dependency
-            // directory is at the rootComponentDir + the innerDependencyFileName
-
-            // recursively register other intra-dependencies in the other component directory.
-            registerComponentIntraDependencies(moduleDir, options);
+            // recursively register other intra-dependencies in the local component directory.
+            registerComponentIntraDependencies(modDir, options);
           }
         },
       });

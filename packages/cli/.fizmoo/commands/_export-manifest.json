@@ -1,80 +1,121 @@
 {
-  "react:overlays:modal": {
+  "react:modal": {
     "displayName": "modal",
-    "pkg": "@stratum-ui/react",
-    "srcDir": "src/overlays/modal",
-    "dependencies": ["core:modal", "core:dialog"]
+    "pkg": "react",
+    "pkgImportPath": "@stratum-ui/react",
+    "modSrcDir": "src/overlays/modal",
+    "dependencies": [
+      "core:modal",
+      "core:dialog"
+    ]
   },
-  "react:overlays:popover": {
+  "react:popover": {
     "displayName": "popover",
-    "pkg": "@stratum-ui/react",
-    "srcDir": "src/overlays/popover",
-    "dependencies": ["core:popover", "core:utils"]
+    "pkg": "react",
+    "pkgImportPath": "@stratum-ui/react",
+    "modSrcDir": "src/overlays/popover",
+    "dependencies": [
+      "core:popover",
+      "core:utils"
+    ]
   },
-  "react:overlays:toggletip": {
+  "react:toggletip": {
     "displayName": "toggletip",
-    "pkg": "@stratum-ui/react",
-    "srcDir": "src/overlays/toggletip",
-    "dependencies": ["core:toggletip"]
+    "pkg": "react",
+    "pkgImportPath": "@stratum-ui/react",
+    "modSrcDir": "src/overlays/toggletip",
+    "dependencies": [
+      "core:toggletip"
+    ]
   },
-  "react:overlays:tooltip": {
+  "react:tooltip": {
     "displayName": "tooltip",
-    "pkg": "@stratum-ui/react",
-    "srcDir": "src/overlays/tooltip",
-    "dependencies": ["core:tooltip"]
+    "pkg": "react",
+    "pkgImportPath": "@stratum-ui/react",
+    "modSrcDir": "src/overlays/tooltip",
+    "dependencies": [
+      "core:tooltip"
+    ]
   },
-  "react:controls:button": {
+  "react:button": {
     "displayName": "button",
-    "pkg": "@stratum-ui/react",
-    "srcDir": "src/controls/button",
-    "dependencies": ["core:popover", "core:utils"]
+    "pkg": "react",
+    "pkgImportPath": "@stratum-ui/react",
+    "modSrcDir": "src/controls/button",
+    "dependencies": [
+      "core:popover",
+      "core:utils"
+    ]
   },
-  "react:controls:link": {
+  "react:link": {
     "displayName": "link",
-    "pkg": "@stratum-ui/react",
-    "srcDir": "src/controls/link",
-    "dependencies": ["core:utils"]
+    "pkg": "react",
+    "pkgImportPath": "@stratum-ui/react",
+    "modSrcDir": "src/controls/link",
+    "dependencies": [
+      "core:utils"
+    ]
   },
   "core:async-queue": {
     "displayName": "async-queue",
-    "pkg": "@stratum-ui/core",
-    "srcDir": "src/async-queue",
+    "pkg": "core",
+    "pkgImportPath": "@stratum-ui/core",
+    "modSrcDir": "src/async-queue",
     "dependencies": []
   },
   "core:dialog": {
     "displayName": "dialog",
-    "pkg": "@stratum-ui/core",
-    "srcDir": "src/dialog",
-    "dependencies": ["core:async-queue"]
+    "pkg": "core",
+    "pkgImportPath": "@stratum-ui/core",
+    "modSrcDir": "src/dialog",
+    "dependencies": [
+      "core:async-queue"
+    ]
   },
   "core:modal": {
     "displayName": "modal",
-    "pkg": "@stratum-ui/core",
-    "srcDir": "src/modal",
-    "dependencies": ["core:dialog", "core:async-queue"]
+    "pkg": "core",
+    "pkgImportPath": "@stratum-ui/core",
+    "modSrcDir": "src/modal",
+    "dependencies": [
+      "core:dialog",
+      "core:async-queue"
+    ]
   },
   "core:popover": {
     "displayName": "popover",
-    "pkg": "@stratum-ui/core",
-    "srcDir": "src/popover",
-    "dependencies": ["core:async-queue"]
+    "pkg": "core",
+    "pkgImportPath": "@stratum-ui/core",
+    "modSrcDir": "src/popover",
+    "dependencies": [
+      "core:async-queue"
+    ]
   },
   "core:toggletip": {
     "displayName": "toggletip",
-    "pkg": "@stratum-ui/core",
-    "srcDir": "src/toggletip",
-    "dependencies": ["core:popover", "core:async-queue"]
+    "pkg": "core",
+    "pkgImportPath": "@stratum-ui/core",
+    "modSrcDir": "src/toggletip",
+    "dependencies": [
+      "core:popover",
+      "core:async-queue"
+    ]
   },
   "core:tooltip": {
     "displayName": "tooltip",
-    "pkg": "@stratum-ui/core",
-    "srcDir": "src/tooltip",
-    "dependencies": ["core:popover", "core:async-queue"]
+    "pkg": "core",
+    "pkgImportPath": "@stratum-ui/core",
+    "modSrcDir": "src/tooltip",
+    "dependencies": [
+      "core:popover",
+      "core:async-queue"
+    ]
   },
   "core:utils": {
     "displayName": "utils",
-    "pkg": "@stratum-ui/core",
-    "srcDir": "src/utils",
+    "pkg": "core",
+    "pkgImportPath": "@stratum-ui/core",
+    "modSrcDir": "src/utils",
     "dependencies": []
   }
 }

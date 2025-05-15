@@ -1,11 +1,9 @@
 import { createRequire } from "module";
 import path from "node:path";
-import { readdirSync, readFileSync } from "node:fs";
+import { cp, readdir, readFile, writeFile } from "node:fs/promises";
 
-import type { Action, Meta } from "fizmoo";
+import { defineOptions, type Action, type Meta } from "fizmoo";
 import { checkbox, select } from "@inquirer/prompts";
-import { traverse } from "@babel/core";
-import { parse } from "@babel/parser";
 import { printAsBullets } from "isoscribe";
 
 import manifest from "./_export-manifest.json" with { type: "json" };
@@ -19,57 +17,119 @@ export const meta: Meta = {
     "Answer a few prompts to export any Stratum component and it's implicit dependencies",
 };
 
-export const action: Action = async () => {
+export const options = defineOptions({
+  outDir: {
+    type: "string",
+    description: "The directory that each module should be output",
+    alias: "o",
+    required: true,
+  },
+});
+
+export const action: Action<never, typeof options> = async ({ options }) => {
   LOG.info("Starting the export process...");
 
+  const packages = [
+    ...new Set(Object.values(manifest).map((entry) => entry.pkg)),
+  ];
+
   // The user selects their library / framework
-  const adapter = await select<keyof typeof manifest>({
+  const adapter = await select<string>({
     message:
       "Select the framework / library that is being used in your project",
-    choices: Object.keys(manifest),
+    choices: packages,
   });
   LOG.debug("Selected adapter", adapter);
 
   // Select the modules that are available to export
-  const availableModules = manifest[adapter].modules;
-  const moduleKeys = await checkbox<keyof typeof availableModules>({
+  const selectedModules = await checkbox<keyof typeof manifest>({
     message: "Select the components you wish to export into your project",
-    choices: Object.keys(availableModules),
+    choices: Object.entries(manifest).reduce<
+      { name: string; value: keyof typeof manifest }[]
+    >((accum, [moduleId, module]) => {
+      if (!moduleId.startsWith(adapter)) return accum;
+      return accum.concat({
+        name: module.displayName,
+        value: moduleId as keyof typeof manifest,
+      });
+    }, []),
   });
-  LOG.debug("Selected modules", moduleKeys);
+  const requiredModules = new Set<keyof typeof manifest>();
 
-  const dependencies = new Set<string>();
-  const DEPENDENCY_ID = "__STRATUM__";
-
-  
-
-  for (const moduleKey of moduleKeys) {
-    const moduleGraph = manifest[adapter].modules[moduleKey];
-    const adapterRoot = path.dirname(
-      require.resolve(manifest[adapter].packageJson)
-    );
-    const adapterSrcPath = path.join(adapterRoot, "./src");
-    const moduleRootPath = path.join(adapterRoot, moduleGraph.sourcePath);
-    LOG.trace("parsing module key", { moduleKey, adapterSrcPath, moduleRootPath });
-
-    dependencies.add("/".concat(moduleKey))
-
-    // use the inline recursive function to start searching for intra-dependencies
-    // starting at the folder of the component selected by the user.
-    registerComponentIntraDependencies(moduleRootPath, {
-      sourceRoot: adapterSrcPath,
-    });
+  function gatherRequiredDeps(moduleId: keyof typeof manifest) {
+    requiredModules.add(moduleId);
+    const { dependencies } = manifest[moduleId];
+    if (dependencies.length === 0) return;
+    for (const dep of dependencies) {
+      gatherRequiredDeps(dep as keyof typeof manifest);
+    }
   }
-
-  const dependenciesArr = [...dependencies.values()];
-  LOG.success("complete!");
-  if (dependenciesArr.length === 0) {
-    LOG.debug("No interdependencies.");
-  } else {
-    LOG.info(
-      `Dependencies that will be copied: ${printAsBullets(dependenciesArr, {
-        bulletType: "numbers",
-      })}`
-    );
+  for (const selectedModuleId of selectedModules) {
+    gatherRequiredDeps(selectedModuleId);
   }
+  const moduleKeys = [...new Set(requiredModules.values())];
+  LOG.debug("All required dependencies")
+  LOG.debug(printAsBullets(moduleKeys))
+  const outDir = path.resolve(process.cwd(), options.outDir);
+
+  await Promise.all(
+    moduleKeys.map(async (moduleKey) => {
+      try {
+        const module = manifest[moduleKey];
+        LOG.debug(`Exporting "${moduleKey}"...`);
+        const moduleResolution =
+          module.pkg === "core"
+            ? require.resolve(
+                path.join(module.pkgImportPath, module.displayName)
+              )
+            : require.resolve(path.join(module.pkgImportPath, "package.json"));
+        const moduleRootDir = path.dirname(moduleResolution);
+        const moduleSrcDir =
+          module.pkg === "core"
+            ? path.join(moduleRootDir.split("dist")[0], module.modSrcDir)
+            : path.join(moduleRootDir, module.modSrcDir);
+        const moduleOutDir =
+          module.pkg === "core"
+            ? path.join(outDir, "_core", module.displayName)
+            : path.join(outDir, module.displayName);
+
+        LOG.debug(`   |-   root: ${moduleRootDir}`);
+        LOG.debug(`   |-  input: ${moduleSrcDir}`);
+        LOG.debug(`   |- output: ${moduleOutDir}`);
+        LOG.debug("");
+
+        await cp(moduleSrcDir, moduleOutDir, { recursive: true, force: true });
+
+        // const replacements = [{
+        //     find: `@stratum-ui/core/${module.displayName}/css`,
+        //     replace: `../_core/${module.displayName}/index.styles.scss`
+        //   },
+        //  {
+        //   find: `@stratum-ui/core/${module.displayName}`,
+        //   replace: `../_core/${module.displayName}/index.js`
+        //  }]
+
+        // const dirents = await readdir(moduleOutDir, { withFileTypes: true });
+        // for (const dirent of dirents) {
+        //   if (dirent.isDirectory()) continue;
+        //   const filePath = path.join(dirent.parentPath, dirent.name);
+        //   console.log({ filePath })
+        //   let fileContent = await readFile(filePath, "utf8");
+
+        //   for (const replacement of replacements) {
+        //     fileContent = fileContent.replace(replacement.find, replacement.replace);
+        //   }
+
+        //   await writeFile(fileContent, filePath, "utf8")
+        // }
+      } catch (error) {
+        if (error instanceof Error) {
+          return LOG.fatal(error);
+        }
+        return LOG.fatal(new Error(String(error)));
+      }
+    })
+  );
+
+  LOG.debug("Selected modules");
 };
