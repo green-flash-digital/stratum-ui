@@ -26,6 +26,9 @@
     "test": "yarn vitest --run",
     "lint": "eslint src --fix"
   },
+  "resolutions": {
+    "ts-jolt": "0.2.3"
+  },
   "devDependencies": {
     "@changesets/cli": "2.29.4",
     "@gfdigital/eslint-config": "0.4.3",

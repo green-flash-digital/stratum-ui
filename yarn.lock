@@ -9806,21 +9806,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-jolt@npm:0.2.1":
-  version: 0.2.1
-  resolution: "ts-jolt@npm:0.2.1"
-  checksum: 10c0/7cc73f63fc894a9d38785030c94677dcce1aa78b130665d3822d0223ff124252868afba32468eb2bfb47324508a652dd21f672706b3b8268fc91e4370199d5ee
-  languageName: node
-  linkType: hard
-
-"ts-jolt@npm:0.2.2":
-  version: 0.2.2
-  resolution: "ts-jolt@npm:0.2.2"
-  checksum: 10c0/7d236fe09b8adf276f22835a28114ad066e0d10867a0250f9195c25d77fd06f61d0691a9d38894d707b0678f1d60917b9ec358e4c53ce437cb6c3f19dfdc7d18
-  languageName: node
-  linkType: hard
-
-"ts-jolt@npm:^0.2.1, ts-jolt@npm:^0.2.3":
+"ts-jolt@npm:0.2.3":
   version: 0.2.3
   resolution: "ts-jolt@npm:0.2.3"
   dependencies:
