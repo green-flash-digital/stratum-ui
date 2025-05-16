@@ -29,12 +29,11 @@
     "@stratum-ui/core": "0.1.0",
     "@stratum-ui/react": "0.1.0",
     "fizmoo": "0.1.2",
-    "isoscribe": "^0.2.0",
-    "ts-jolt": "0.2.3"
+    "isoscribe": "^0.2.0"
   },
   "devDependencies": {
     "@gfdigital/tsconfig": "0.3.1",
-    "@types/babel__core": "^7",
+    "@types/babel__core": "^7.20.5",
     "tsx": "4.19.4"
   },
   "bin": {

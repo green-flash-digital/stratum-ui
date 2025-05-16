@@ -5,7 +5,7 @@ import "@stratum-ui/core/toggletip/css";
 import { useToggletip } from "./toggletip.useToggletip.js";
 
 const meta: Meta = {
-  title: "React / Overlay / Toggletip",
+  title: "Overlay / Toggletip",
 };
 
 export default meta;

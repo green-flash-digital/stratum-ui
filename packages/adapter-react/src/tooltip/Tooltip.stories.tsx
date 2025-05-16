@@ -5,7 +5,7 @@ import "@stratum-ui/core/tooltip/css";
 import { useTooltip } from "./tooltip.useTooltip.js";
 
 const meta: Meta = {
-  title: "React / Overlay / Tooltip",
+  title: "Overlay / Tooltip",
 };
 
 export default meta;
