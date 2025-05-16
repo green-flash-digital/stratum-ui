@@ -1,6 +1,6 @@
-export * from "./overlays/modal/index.js";
-export * from "./overlays/popover/index.js";
-export * from "./overlays/toggletip/index.js";
-export * from "./overlays/tooltip/index.js";
+export * from "./modal/index.js";
+export * from "./popover/index.js";
+export * from "./toggletip/index.js";
+export * from "./tooltip/index.js";
 
-export * from "./controls/button/index.js";
+export * from "./button/index.js";

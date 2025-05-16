@@ -24,9 +24,22 @@ export const options = defineOptions({
     alias: "o",
     required: true,
   },
+  debug: {
+    type: "boolean",
+    description: "Print detailed logs to the console",
+    alias: "d",
+    required: false,
+    default: false,
+  },
 });
 
 export const action: Action<never, typeof options> = async ({ options }) => {
+  if (options.debug) {
+    LOG.setLogLevel("debug");
+  } else {
+    LOG.setLogLevel("info");
+  }
+
   LOG.info("Starting the export process...");
 
   const packages = [
@@ -42,17 +55,18 @@ export const action: Action<never, typeof options> = async ({ options }) => {
   LOG.debug("Selected adapter", adapter);
 
   // Select the modules that are available to export
+  const moduleChoices = Object.entries(manifest).reduce<
+    { name: string; value: keyof typeof manifest }[]
+  >((accum, [moduleId, module]) => {
+    if (!moduleId.startsWith(adapter)) return accum;
+    return accum.concat({
+      name: module.displayName,
+      value: moduleId as keyof typeof manifest,
+    });
+  }, []);
   const selectedModules = await checkbox<keyof typeof manifest>({
     message: "Select the components you wish to export into your project",
-    choices: Object.entries(manifest).reduce<
-      { name: string; value: keyof typeof manifest }[]
-    >((accum, [moduleId, module]) => {
-      if (!moduleId.startsWith(adapter)) return accum;
-      return accum.concat({
-        name: module.displayName,
-        value: moduleId as keyof typeof manifest,
-      });
-    }, []),
+    choices: moduleChoices,
   });
   const requiredModules = new Set<keyof typeof manifest>();
 
@@ -68,8 +82,8 @@ export const action: Action<never, typeof options> = async ({ options }) => {
     gatherRequiredDeps(selectedModuleId);
   }
   const moduleKeys = [...new Set(requiredModules.values())];
-  LOG.debug("All required dependencies")
-  LOG.debug(printAsBullets(moduleKeys))
+  LOG.debug("All required dependencies");
+  LOG.debug(printAsBullets(moduleKeys));
   const outDir = path.resolve(process.cwd(), options.outDir);
 
   await Promise.all(
@@ -100,28 +114,42 @@ export const action: Action<never, typeof options> = async ({ options }) => {
 
         await cp(moduleSrcDir, moduleOutDir, { recursive: true, force: true });
 
-        // const replacements = [{
-        //     find: `@stratum-ui/core/${module.displayName}/css`,
-        //     replace: `../_core/${module.displayName}/index.styles.scss`
-        //   },
-        //  {
-        //   find: `@stratum-ui/core/${module.displayName}`,
-        //   replace: `../_core/${module.displayName}/index.js`
-        //  }]
+        const replacements: {
+          pattern: RegExp;
+          replacer: (match: RegExpMatchArray) => string;
+        }[] = [
+          // Replace style imports
+          {
+            pattern: /from\s+['"]@stratum-ui\/core\/([^/]+)\/styles['"]/g,
+            replacer: ([, component]) =>
+              `from "../_core/${component}/${component}.module.scss"`,
+          },
+          // Replace css-only side-effect imports with new stylesheet (or remove)
+          {
+            pattern: /import\s+['"]@stratum-ui\/core\/([^/]+)\/css['"];\n?/g,
+            replacer: ([, _component]) => ``, // or return "" to remove
+          },
+          // Replace core module imports
+          {
+            pattern: /from\s+['"]@stratum-ui\/core\/([^'"]+)['"]/g,
+            replacer: ([, path]) => `from "../_core/${path}/index.js"`,
+          },
+        ];
 
-        // const dirents = await readdir(moduleOutDir, { withFileTypes: true });
-        // for (const dirent of dirents) {
-        //   if (dirent.isDirectory()) continue;
-        //   const filePath = path.join(dirent.parentPath, dirent.name);
-        //   console.log({ filePath })
-        //   let fileContent = await readFile(filePath, "utf8");
+        const dirents = await readdir(moduleOutDir, { withFileTypes: true });
+        for (const dirent of dirents) {
+          if (dirent.isDirectory()) continue;
+          const filePath = path.join(dirent.parentPath, dirent.name);
+          let fileContent = await readFile(filePath, "utf8");
 
-        //   for (const replacement of replacements) {
-        //     fileContent = fileContent.replace(replacement.find, replacement.replace);
-        //   }
+          for (const { pattern, replacer } of replacements) {
+            fileContent = fileContent.replace(pattern, (...args) =>
+              replacer(args as RegExpMatchArray)
+            );
+          }
 
-        //   await writeFile(fileContent, filePath, "utf8")
-        // }
+          await writeFile(filePath, fileContent, "utf8");
+        }
       } catch (error) {
         if (error instanceof Error) {
           return LOG.fatal(error);
@@ -131,5 +159,9 @@ export const action: Action<never, typeof options> = async ({ options }) => {
     })
   );
 
-  LOG.debug("Selected modules");
+  LOG.success(`Done!
+
+Successfully exported:
+${moduleChoices.map((mod) => `  - ${mod.name}`).join("\n")}
+`);
 };

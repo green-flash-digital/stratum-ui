@@ -1,9 +1,29 @@
 {
+  "react:button": {
+    "displayName": "button",
+    "pkg": "react",
+    "pkgImportPath": "@stratum-ui/react",
+    "modSrcDir": "src/button",
+    "dependencies": [
+      "core:popover",
+      "core:utils",
+      "react:popover"
+    ]
+  },
+  "react:link": {
+    "displayName": "link",
+    "pkg": "react",
+    "pkgImportPath": "@stratum-ui/react",
+    "modSrcDir": "src/link",
+    "dependencies": [
+      "core:utils"
+    ]
+  },
   "react:modal": {
     "displayName": "modal",
     "pkg": "react",
     "pkgImportPath": "@stratum-ui/react",
-    "modSrcDir": "src/overlays/modal",
+    "modSrcDir": "src/modal",
     "dependencies": [
       "core:modal",
       "core:dialog"
@@ -13,7 +33,7 @@
     "displayName": "popover",
     "pkg": "react",
     "pkgImportPath": "@stratum-ui/react",
-    "modSrcDir": "src/overlays/popover",
+    "modSrcDir": "src/popover",
     "dependencies": [
       "core:popover",
       "core:utils"
@@ -23,7 +43,7 @@
     "displayName": "toggletip",
     "pkg": "react",
     "pkgImportPath": "@stratum-ui/react",
-    "modSrcDir": "src/overlays/toggletip",
+    "modSrcDir": "src/toggletip",
     "dependencies": [
       "core:toggletip"
     ]
@@ -32,28 +52,9 @@
     "displayName": "tooltip",
     "pkg": "react",
     "pkgImportPath": "@stratum-ui/react",
-    "modSrcDir": "src/overlays/tooltip",
+    "modSrcDir": "src/tooltip",
     "dependencies": [
       "core:tooltip"
-    ]
-  },
-  "react:button": {
-    "displayName": "button",
-    "pkg": "react",
-    "pkgImportPath": "@stratum-ui/react",
-    "modSrcDir": "src/controls/button",
-    "dependencies": [
-      "core:popover",
-      "core:utils"
-    ]
-  },
-  "react:link": {
-    "displayName": "link",
-    "pkg": "react",
-    "pkgImportPath": "@stratum-ui/react",
-    "modSrcDir": "src/controls/link",
-    "dependencies": [
-      "core:utils"
     ]
   },
   "core:async-queue": {

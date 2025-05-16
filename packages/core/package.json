@@ -53,7 +53,6 @@
   },
   "dependencies": {
     "immer": "10.1.1",
-    "isoscribe": "0.2.0",
     "ts-jolt": "0.2.3"
   }
 }
