@@ -2,14 +2,7 @@ import { castDraft } from "immer";
 
 import { AsyncStateQueue } from "../async-queue/index.js";
 
-export type ToastVariantDefaults = "success" | "error" | "warning" | "info";
-export const toastVariantDefaults: ToastVariantDefaults[] = [
-  "error",
-  "info",
-  "success",
-  "warning",
-];
-export type ToastType<T extends string = ToastVariantDefaults> = {
+export type ToastType<T extends string> = {
   type: T;
   message: string;
   dismissMode?: "auto" | "manual";
@@ -21,11 +14,11 @@ export type ToastType<T extends string = ToastVariantDefaults> = {
   duration?: number; // in ms
 };
 
-type ToastState<T extends string = ToastVariantDefaults> = {
+type ToastState<T extends string> = {
   toasts: (ToastType<T> & { id: ReturnType<typeof crypto.randomUUID> })[];
 };
 
-export class ToastEngine<T extends string = ToastVariantDefaults> {
+export class ToastEngine<T extends string> {
   protected _queue: AsyncStateQueue<ToastState<T>>;
 
   constructor() {

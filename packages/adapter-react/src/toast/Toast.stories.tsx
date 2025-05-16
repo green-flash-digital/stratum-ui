@@ -1,9 +1,7 @@
 import type { Meta } from "@storybook/react";
 import { useCallback } from "react";
-import { toastVariantDefaults } from "@stratum-ui/core/toast";
 
-import { toaster } from "./toast-controller.js";
-import { Toaster } from "./Toaster.js";
+import { getToaster, Toaster } from "./Toaster.js";
 
 const meta: Meta = {
   title: "Notifications / Toast",
@@ -62,23 +60,45 @@ function generateRandomSentence() {
 }
 
 function generateRandomType() {
-  const index = Math.floor(Math.random() * toastVariantDefaults.length);
-  return toastVariantDefaults[index];
+  const index = Math.floor(Math.random() * Object.keys(toastColor).length);
+  return Object.keys(toastColor)[index] as ToastVariants;
 }
 
-export const Imperative = () => {
+type ToastVariants = "success" | "failure" | "info" | "plain" | "warning";
+const toastColor: { [key in ToastVariants]: string } = {
+  success: "#c5ff9e",
+  warning: "#ecc800",
+  failure: "#ff8787",
+  plain: "#dbdbdb",
+  info: "#99befd",
+};
+
+const toaster = getToaster<ToastVariants>();
+
+export const WithImperative = () => {
   const handleClick = useCallback(() => {
     toaster.create({
       message: generateRandomSentence(),
       type: generateRandomType(),
-      dismissMode: "manual",
     });
   }, []);
 
   return (
     <>
       <button onClick={handleClick}>Create toast</button>
-      <Toaster />
+      <Toaster<ToastVariants>
+        ToastComponent={(props) => (
+          <div
+            {...props}
+            style={{ background: toastColor[props.type], marginTop: "1rem" }}
+          >
+            <button onClick={props.onClose} type="button">
+              X
+            </button>
+            {props.message}
+          </div>
+        )}
+      />
     </>
   );
 };
