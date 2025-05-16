@@ -23,9 +23,12 @@
   },
   "scripts": {
     "build": "yarn tsc --project ./tsconfig.build.json",
-    "dev": "yarn build --watch"
+    "dev": "yarn build --watch",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^3",
     "@gfdigital/tsconfig": "0.3.1",
     "@linaria/core": "6.3.0",
     "@storybook/addon-essentials": "8.6.12",

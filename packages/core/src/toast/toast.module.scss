@@ -1,0 +1,42 @@
+.toaster-base {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  height: min-content;
+  min-width: 300px;
+
+  &:global {
+    & > .toast {
+      &.enter {
+        animation: toast-in 0.1s ease-out forwards;
+      }
+      &.exit {
+        animation: toast-out 0.1s ease-in forwards;
+      }
+    }
+  }
+}
+
+/* Fly in from bottom */
+@keyframes :global(toast-in) {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Fly out to the right */
+@keyframes :global(toast-out) {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(150%);
+    opacity: 0;
+  }
+}
