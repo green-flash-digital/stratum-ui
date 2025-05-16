@@ -5,6 +5,7 @@ import {
   constants,
   readFile,
   writeFile,
+  rm,
 } from "node:fs/promises";
 import readline from "node:readline";
 import { exec } from "node:child_process";
@@ -60,7 +61,7 @@ export class StratumScripts {
         const entryFilePath = path.join(
           dirent.parentPath,
           dirent.name,
-          "./_index.ts"
+          "./index.ts"
         );
         const outDir = path.resolve(this._ROOT_DIR_DIST, dirent.name);
         const packageName = path.relative(
@@ -143,11 +144,16 @@ export class StratumScripts {
     const config: InlineConfig = {
       css: {
         modules: {
-          generateScopedName: "[name]__[local]__[hash:base64:5]",
+          scopeBehaviour: "global",
         },
       },
       logLevel: "silent",
       clearScreen: false,
+      resolve: {
+        alias: {
+          __STRATUM__: path.resolve(import.meta.dirname, "../src"),
+        },
+      },
       build: {
         outDir: manifestEntry.outDir,
         lib: {
@@ -172,10 +178,11 @@ export class StratumScripts {
   }
 
   private async _getPackageStyleFile(manifestEntry: PackageManifestEntry) {
+    const moduleName = path.basename(manifestEntry.entryDir);
     try {
       const styleFilePath = path.resolve(
         manifestEntry.entryDir,
-        "./_styles.scss"
+        `./${moduleName}.module.scss`
       );
       const styleFileContent = await readFile(styleFilePath, {});
       return { styleFileContent, styleFilePath };
@@ -206,11 +213,7 @@ export class StratumScripts {
 
     const cssFileContent = result.css;
     const cssFilePath = path.join(manifestEntry.outDir, "./index.css");
-    const outFileContent = `export const styles = ${JSON.stringify(
-      json,
-      null,
-      2
-    )};\n`;
+    const outFileContent = `export default ${JSON.stringify(json, null, 2)};\n`;
     const outFilePath = path.join(manifestEntry.entryDir, "./styles.ts");
 
     return {
@@ -218,6 +221,8 @@ export class StratumScripts {
         await writeFile(outFilePath, outFileContent, "utf-8"),
       writeCSS: async () =>
         await writeFile(cssFilePath, cssFileContent, "utf-8"),
+      deleteStyles: async () =>
+        await rm(outFilePath, { force: true, recursive: true }),
     };
   }
 
@@ -248,8 +253,10 @@ export class StratumScripts {
     const manifest = await this._getPackageManifest({ forceRefetch });
     await this.drawStatus(manifest);
 
+    const manifestEntires = [...manifest.entries()];
+
     await Promise.all(
-      [...manifest.entries()].map(async ([entryKey, entry]) => {
+      manifestEntires.map(async ([entryKey, entry]) => {
         try {
           const buildFn = await this._getPackageBuildFn(entry);
           const styleFns = await this._getPackageStyleFns(entry);
@@ -273,6 +280,16 @@ export class StratumScripts {
     );
 
     await this._buildTSTypes();
+
+    console.log("Cleaning up...");
+    await Promise.all(
+      manifestEntires.map(async ([_, entry]) => {
+        const styleFns = await this._getPackageStyleFns(entry);
+        if (!styleFns) return;
+        await styleFns.deleteStyles();
+      })
+    );
+    console.log("Cleaning up... ✅ Complete!\n");
 
     this._buildCount++;
   }

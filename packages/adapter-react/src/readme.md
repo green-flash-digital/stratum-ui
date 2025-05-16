@@ -1,0 +1,1 @@
+- Controls - They're responsible for user-initiated actions, often triggering behaviors or state changes.

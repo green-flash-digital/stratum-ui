@@ -1,11 +1,11 @@
 import type { Meta } from "@storybook/react";
-import { styles } from "@stratum-ui/core/toggletip/styles";
-
+import styles from "@stratum-ui/core/toggletip/styles";
 import "@stratum-ui/core/toggletip/css";
+
 import { useToggletip } from "./toggletip.useToggletip.js";
 
 const meta: Meta = {
-  title: "Toggletip",
+  title: "Overlay / Toggletip",
 };
 
 export default meta;

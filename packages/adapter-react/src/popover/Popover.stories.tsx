@@ -1,15 +1,15 @@
 import type { Meta } from "@storybook/react";
-import { css } from "@linaria/core";
 import type { PopoverPosition } from "@stratum-ui/core/popover";
 import { PopoverEngine, popoverPositions } from "@stratum-ui/core/popover";
-import "@stratum-ui/core/popover/css";
-import { styles } from "@stratum-ui/core/popover/styles";
 import { classes } from "@stratum-ui/core/utils";
+import styles from "@stratum-ui/core/popover/styles";
+import "@stratum-ui/core/popover/css";
 
 import { usePopover } from "./popover.usePopover.js";
+import storyStyles from "./_stories.module.scss";
 
 const meta: Meta = {
-  title: "Popover",
+  title: "Overlay / Popover",
   parameters: {
     layout: "centered",
   },
@@ -65,40 +65,11 @@ export const WithDefaultStyles = () => {
   );
 };
 
-const posStyles = css`
-  display: grid;
-  grid-template-columns: 1fr 300px;
-  grid-template-rows: auto 1fr;
-  grid-template-areas:
-    "header side"
-    "main side";
-  gap: 1rem;
-  height: 100vh;
-  width: 100vw;
-
-  & > * {
-    padding: 2rem;
-    border: 1px solid #ccc;
-  }
-
-  .main {
-    display: grid;
-    place-content: center;
-  }
-
-  :global() {
-    #storybook-root {
-      padding: 0 !important;
-      margin: 0;
-    }
-  }
-`;
-
 export const Positioning = () => {
   const popover = usePopover({ offset: 10 });
 
   return (
-    <div className={posStyles}>
+    <div className={storyStyles.base}>
       <div style={{ gridArea: "header" }}>
         <button onClick={popover.show}>Show</button>
         <button onClick={popover.hide}>Hide</button>
