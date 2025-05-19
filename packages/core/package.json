@@ -1,6 +1,6 @@
 {
   "name": "@stratum-ui/core",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "The base interfaces and classes that can be used independently or integrated with any adapter",
   "author": "Drew DeCarme (drew@greenflash.digital)",
   "license": "Apache-2.0",

@@ -1,6 +1,6 @@
 {
   "name": "@stratum-ui/cli",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "The Stratum UI CLI to export components",
   "author": "Drew DeCarme (drew@greenflash.digital)",
   "license": "Apache-2.0",
@@ -26,8 +26,8 @@
     "@babel/core": "^7.27.1",
     "@babel/parser": "^7.27.2",
     "@inquirer/prompts": "7.5.1",
-    "@stratum-ui/core": "0.1.0",
-    "@stratum-ui/react": "0.1.0",
+    "@stratum-ui/core": "0.2.0",
+    "@stratum-ui/react": "0.2.0",
     "fizmoo": "0.1.2",
     "isoscribe": "^0.2.0"
   },
