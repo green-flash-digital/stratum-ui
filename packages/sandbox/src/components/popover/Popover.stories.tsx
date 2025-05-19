@@ -8,7 +8,7 @@ import { usePopover } from "./popover.usePopover.js";
 import storyStyles from "./_stories.module.scss";
 
 const meta: Meta = {
-  title: "React / Overlay / Popover",
+  title: "Overlay / Popover",
   parameters: {
     layout: "centered",
   },

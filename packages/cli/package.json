@@ -19,7 +19,7 @@
   },
   "scripts": {
     "manifest": "yarn tsx ./scripts/create-export-manifest.ts",
-    "build": "yarn fizmoo build",
+    "build": "yarn manifest && yarn fizmoo build",
     "dev": "yarn fizmoo dev"
   },
   "dependencies": {

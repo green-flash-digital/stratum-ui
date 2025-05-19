@@ -39,6 +39,16 @@
       "core:utils"
     ]
   },
+  "react:toast": {
+    "displayName": "toast",
+    "pkg": "react",
+    "pkgImportPath": "@stratum-ui/react",
+    "modSrcDir": "src/toast",
+    "dependencies": [
+      "core:toast",
+      "react:useDynamicNode"
+    ]
+  },
   "react:toggletip": {
     "displayName": "toggletip",
     "pkg": "react",
@@ -55,6 +65,15 @@
     "modSrcDir": "src/tooltip",
     "dependencies": [
       "core:tooltip"
+    ]
+  },
+  "react:usePortal": {
+    "displayName": "usePortal",
+    "pkg": "react",
+    "pkgImportPath": "@stratum-ui/react",
+    "modSrcDir": "src/usePortal",
+    "dependencies": [
+      "react:useDynamicNode"
     ]
   },
   "core:async-queue": {
@@ -89,6 +108,16 @@
     "pkgImportPath": "@stratum-ui/core",
     "modSrcDir": "src/popover",
     "dependencies": [
+      "core:async-queue",
+      "core:utils"
+    ]
+  },
+  "core:toast": {
+    "displayName": "toast",
+    "pkg": "core",
+    "pkgImportPath": "@stratum-ui/core",
+    "modSrcDir": "src/toast",
+    "dependencies": [
       "core:async-queue"
     ]
   },
@@ -99,7 +128,8 @@
     "modSrcDir": "src/toggletip",
     "dependencies": [
       "core:popover",
-      "core:async-queue"
+      "core:async-queue",
+      "core:utils"
     ]
   },
   "core:tooltip": {
@@ -109,7 +139,8 @@
     "modSrcDir": "src/tooltip",
     "dependencies": [
       "core:popover",
-      "core:async-queue"
+      "core:async-queue",
+      "core:utils"
     ]
   },
   "core:utils": {
