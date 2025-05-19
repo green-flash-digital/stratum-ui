@@ -1,6 +1,6 @@
-# @stratum-ui/core
+# @stratum-ui/sandbox
 
-## 0.2.0
+## 0.1.0
 
 ### Minor Changes
 
@@ -15,9 +15,3 @@
   ```
 
   The Stratum CLI is built with [`fizmoo`](https://fizmoo.greenflash.digital) which is a file based Typescript CLI framework build extremely light weight Node JS CLIs.
-
-## 0.1.0
-
-### Minor Changes
-
-- 9e7cb34: Adds Modal, Popover, Tooltip & Toggletip to the React components
