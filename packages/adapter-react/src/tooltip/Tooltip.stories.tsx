@@ -1,11 +1,11 @@
 import type { Meta } from "@storybook/react";
-import { styles } from "@stratum-ui/core/tooltip/styles";
+import styles from "@stratum-ui/core/tooltip/styles";
 import "@stratum-ui/core/tooltip/css";
 
 import { useTooltip } from "./tooltip.useTooltip.js";
 
 const meta: Meta = {
-  title: "Tooltip",
+  title: "Overlay / Tooltip",
 };
 
 export default meta;
