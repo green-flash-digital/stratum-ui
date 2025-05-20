@@ -6,8 +6,9 @@ import { defineOptions, type Action, type Meta } from "fizmoo";
 import { checkbox, select } from "@inquirer/prompts";
 import { printAsBullets } from "isoscribe";
 
-import manifest from "./_export-manifest.json" with { type: "json" };
-import { LOG } from "./_log.js";
+import manifest from "./manifest.json" with { type: "json" };
+
+import { LOG } from "../_utils/_util.log.js";
 
 const require = createRequire(import.meta.url);
 
