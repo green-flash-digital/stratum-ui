@@ -20,7 +20,7 @@ const LOG = new Isoscribe({
 const PACKAGE_ROOT_DIR = path.resolve(import.meta.dirname, "../../");
 const MANIFEST_OUT_PATH = path.resolve(
   import.meta.dirname,
-  "../.fizmoo/commands/_export-manifest.json"
+  "../.fizmoo/commands/export/manifest.json"
 );
 
 try {

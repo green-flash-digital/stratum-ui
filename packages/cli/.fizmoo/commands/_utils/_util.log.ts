@@ -6,3 +6,10 @@ export const LOG = new Isoscribe({
   logLevel: "debug",
   pillColor: "#89bf89",
 });
+
+export function handleError(error: unknown) {
+  if (error instanceof Error) {
+    return LOG.fatal(error);
+  }
+  LOG.fatal(new Error(String(error)));
+}
