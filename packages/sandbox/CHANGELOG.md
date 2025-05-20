@@ -1,5 +1,11 @@
 # @stratum-ui/sandbox
 
+## 0.2.0
+
+### Minor Changes
+
+- bab1bdb: Adds `icons` command to the `@stratum-ui/cli` package to automatically parse and create dynamically importable react components. This command requires you to add a required argument that dictates where the svg files are that need to be parsed.
+
 ## 0.1.0
 
 ### Minor Changes

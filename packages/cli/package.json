@@ -1,6 +1,6 @@
 {
   "name": "@stratum-ui/cli",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "The Stratum UI CLI to export components",
   "author": "Drew DeCarme (drew@greenflash.digital)",
   "license": "Apache-2.0",
