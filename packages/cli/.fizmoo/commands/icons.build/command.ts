@@ -3,8 +3,9 @@ import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 
 import { transform } from "@svgr/core";
 import { defineArgs, defineOptions, type Action, type Meta } from "fizmoo";
+import { printAsBullets } from "isoscribe";
 
-import { handleError } from "../_utils/_util.log";
+import { handleError, LOG } from "../_utils/_util.log";
 import { toPascalCase } from "../_utils/_util.toPascalCase";
 
 export const meta: Meta = {
@@ -38,12 +39,25 @@ export const options = defineOptions({
     default: "./_generated",
     required: false,
   },
+  debug: {
+    type: "boolean",
+    description: "Prints a verbose output",
+    alias: "d",
+    default: false,
+    required: false,
+  },
 });
 
 export const action: Action<typeof args, typeof options> = async ({
   args,
   options,
 }) => {
+  if (options.debug) {
+    LOG.setLogLevel("debug");
+  } else {
+    LOG.setLogLevel("info");
+  }
+  LOG.info("Reading & transpiling icons...");
   const CWD = process.cwd();
   const ROOT_DIR = path.resolve(CWD, args.root);
   const SVG_DIR = path.join(ROOT_DIR, options["svg-dir"] ?? "./svg");
@@ -53,8 +67,10 @@ export const action: Action<typeof args, typeof options> = async ({
   );
   const GIT_IGNORE_PATH = path.join(ROOT_DIR, "./.gitignore");
   const ICON_MANIFEST_PATH = path.join(GENERATED_DIR, "./index.manifest.ts");
+  LOG.debug("Generating icon components into", GENERATED_DIR);
 
   // Read the contents of the svg dir and create a manifest
+  LOG.debug("Reading SVGs from:", SVG_DIR);
   const dirents = await readdir(SVG_DIR, {
     recursive: true,
     withFileTypes: true,
@@ -71,8 +87,11 @@ export const action: Action<typeof args, typeof options> = async ({
       path: path.join(dirent.parentPath, dirent.name),
     });
   }, []);
+  LOG.info(`Located ${svgManifest.length} SVG(s)`);
+  LOG.debug(printAsBullets(svgManifest.map((entry) => entry.path)));
 
   // Ensure the generated dir exists
+  LOG.debug("Ensuring the generated directory exists");
   await mkdir(GENERATED_DIR, { recursive: true });
 
   // Create the files
@@ -113,7 +132,7 @@ export const action: Action<typeof args, typeof options> = async ({
           return tpl`
         ${variables.imports};
         
-        import { SVGRProps } from "./index.types";
+        import type { SVGRProps } from "./index.types.js";
         
         const ${variables.componentName} = (${variables.props}) => (
           ${variables.jsx}
@@ -136,6 +155,7 @@ export const action: Action<typeof args, typeof options> = async ({
         GENERATED_DIR,
         svgEntry.reactName.concat(".tsx")
       );
+      LOG.info(`  |- ${svgEntry.name} => ${svgEntry.reactName}`);
       await writeFile(outPath, jsCode);
 
       if (i === 0) {
@@ -159,12 +179,14 @@ export type SVGIconComponent = typeof Icon;
   });
 
   try {
+    LOG.info("Transforming icons...");
     await Promise.all(transformers);
   } catch (error) {
     handleError(error);
   }
 
   // Create the index
+  LOG.debug("Creating the barrel file to allow for individual exportation");
   try {
     const indexPath = path.join(GENERATED_DIR, "./index.ts");
     const indexContent = svgManifest.reduce(
@@ -178,14 +200,16 @@ export type SVGIconComponent = typeof Icon;
   }
 
   // Write the icon manifest
+  LOG.debug("Writing the icon manifest to allow for dynamic importation");
   try {
     const manifestEntires = svgManifest.reduce<string[]>((accum, svgEntry) => {
       const fullPath = path.join(
         GENERATED_DIR,
         svgEntry.reactName.concat(".tsx")
       );
-      const relToManifest = path.relative(GENERATED_DIR, fullPath);
-      console.log({ fullPath, ICON_MANIFEST_PATH, relToManifest });
+      const relToManifest = path
+        .relative(GENERATED_DIR, fullPath)
+        .replace(".tsx", ".js");
       return accum.concat(
         `"${svgEntry.name}": () => import("./${relToManifest}")`
       );
@@ -201,8 +225,12 @@ export type SVGIconComponent = typeof Icon;
 
   // write the .gitignore file
   try {
+    LOG.debug("Writing a .gitignore file to ignore generated files");
     await writeFile(GIT_IGNORE_PATH, "_generated");
   } catch (error) {
     handleError(error);
   }
+  LOG.success(
+    `Done! Successfully transformed ${svgManifest.length} icons:${printAsBullets(svgManifest.map((entry) => `${entry.name} => ${entry.reactName}`))}\n`
+  );
 };
