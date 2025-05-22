@@ -39,12 +39,24 @@ export const options = defineOptions({
     default: "./_generated",
     required: false,
   },
+  debug: {
+    type: "boolean",
+    description: "Prints a verbose output",
+    alias: "d",
+    default: false,
+    required: false,
+  },
 });
 
 export const action: Action<typeof args, typeof options> = async ({
   args,
   options,
 }) => {
+  if (options.debug) {
+    LOG.setLogLevel("debug");
+  } else {
+    LOG.setLogLevel("info");
+  }
   LOG.info("Reading & transpiling icons...");
   const CWD = process.cwd();
   const ROOT_DIR = path.resolve(CWD, args.root);
@@ -75,11 +87,8 @@ export const action: Action<typeof args, typeof options> = async ({
       path: path.join(dirent.parentPath, dirent.name),
     });
   }, []);
-  LOG.debug(
-    `Located "${svgManifest.length}" SVGs:${printAsBullets(
-      svgManifest.map((entry) => entry.path)
-    )}`
-  );
+  LOG.info(`Located ${svgManifest.length} SVG(s)`);
+  LOG.debug(printAsBullets(svgManifest.map((entry) => entry.path)));
 
   // Ensure the generated dir exists
   LOG.debug("Ensuring the generated directory exists");
@@ -146,9 +155,8 @@ export const action: Action<typeof args, typeof options> = async ({
         GENERATED_DIR,
         svgEntry.reactName.concat(".tsx")
       );
-      LOG.info(`  |- ${svgEntry.name} => ${svgEntry.reactName}...`);
+      LOG.info(`  |- ${svgEntry.name} => ${svgEntry.reactName}`);
       await writeFile(outPath, jsCode);
-      LOG.info(`  |- ${svgEntry.name} => ${svgEntry.reactName}... successful!`);
 
       if (i === 0) {
         const typesPath = path.resolve(GENERATED_DIR, "./index.types.ts");
